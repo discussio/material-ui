@@ -13,8 +13,7 @@ const styleSheet = createStyleSheet({
     width: '100%',
   },
   content: {
-    paddingLeft: 24,
-    paddingRight: 24,
+    padding: 24,
   },
 });
 
@@ -22,14 +21,8 @@ function SimpleExpansionPanel(props) {
   const classes = props.classes;
   return (
     <div className={classes.root}>
-      <ExpansionPanel headerTitle={'Expansion panel title'} expandIcon={<ExpandMoreIcon />}>
-        <Typography className={classes.content} type="body1" component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-          sit amet blandit leo lobortis eget.
-        </Typography>
-      </ExpansionPanel>
-      <ExpansionPanel headerTitle={'Expansion panel title #2'} expandIcon={<ExpandMoreIcon />}>
-        <Typography className={classes.content} type="body1" component="p">
+      <ExpansionPanel headerTitle="Expansion panel title" expandIcon={<ExpandMoreIcon />}>
+        <Typography className={classes.content} component="p">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
           sit amet blandit leo lobortis eget.
         </Typography>
