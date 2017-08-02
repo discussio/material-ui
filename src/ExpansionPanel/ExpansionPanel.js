@@ -9,18 +9,18 @@ import Collapse from '../transitions/Collapse';
 import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
-  card: {
+export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
+  root: {
     margin: 0,
     transition: theme.transitions.create('margin', {
       duration: theme.transitions.duration.shortest,
     }),
   },
-  cardDisabled: {
+  disabled: {
     backgroundColor: theme.palette.grey[200],
     color: theme.palette.text.disabled,
   },
-  cardExpanded: {
+  expanded: {
     margin: [theme.spacing.unit * 2, 0],
     '&:first-child': {
       marginTop: 0,
@@ -45,7 +45,7 @@ const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
   headerExpanded: {
     height: 64,
   },
-  headerEnabled: {
+  headerHover: {
     '&:hover': {
       cursor: 'pointer',
     },
@@ -53,11 +53,7 @@ const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
   headerDisabled: {
     opacity: 0.38,
   },
-  content: {
-    padding: 0,
-    '&:last-child': {},
-  },
-  expand: {
+  expandButton: {
     width: 40,
     height: 40,
     marginRight: -theme.spacing.unit * 2,
@@ -66,7 +62,7 @@ const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
-  expandOpen: {
+  expandButtonOpen: {
     transform: 'rotate(180deg)',
   },
   focusHolder: {
@@ -84,7 +80,6 @@ class ExpansionPanel extends Component {
   static defaultProps = {
     disabled: false,
     expandIcon: null,
-    headerTitle: '',
     onChange: () => {},
     unmountOnExit: false,
   };
@@ -149,7 +144,7 @@ class ExpansionPanel extends Component {
     return (
       <ComponentProp
         className={classNames(classes.header, {
-          [classes.headerEnabled]: !disabled,
+          [classes.headerHover]: !disabled,
           [classes.headerExpanded]: expanded,
           [classes.headerFocused]: focused,
         })}
@@ -168,8 +163,8 @@ class ExpansionPanel extends Component {
         {expandIcon &&
           <IconButton
             disabled={disabled}
-            className={classNames(classes.expand, {
-              [classes.expandOpen]: expanded,
+            className={classNames(classes.expandButton, {
+              [classes.expandButtonOpen]: expanded,
             })}
             component="div"
             tabIndex={disableTabbing}
@@ -200,9 +195,9 @@ class ExpansionPanel extends Component {
     const { expanded } = this.state;
     return (
       <Card
-        className={classNames(className, classes.card, {
-          [classes.cardDisabled]: disabled,
-          [classes.cardExpanded]: expanded,
+        className={classNames(className, classes.root, {
+          [classes.disabled]: disabled,
+          [classes.expanded]: expanded,
         })}
       >
         {this.renderHeader()}
@@ -219,7 +214,7 @@ ExpansionPanel.propTypes = {
   /**
    * The content of the expansion panel.
    */
-  children: PropTypes.node,
+  children: PropTypes.element,
   /**
    * Useful to extend the style applied to components.
    */
@@ -244,11 +239,11 @@ ExpansionPanel.propTypes = {
   /**
    * The icon to display as the expand indicator.
    */
-  expandIcon: PropTypes.node,
+  expandIcon: PropTypes.element,
   /**
    * Sets the title of the panel header.
    */
-  headerTitle: PropTypes.node,
+  headerTitle: PropTypes.element,
   /**
    * Properties applied to the header title Typography element.
    */
