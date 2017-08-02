@@ -6,11 +6,11 @@ components: ExpansionPanel
 
 The [Expansion panel](https://material.io/guidelines/components/expansion-panels.html), can contain creation flows and allow lightweight editing of an element.
 
-## Simple Expansion panel
+## Simple Expansion Panel
 
 {{demo='pages/component-demos/expansion-panels/SimpleExpansionPanel.js'}}
 
-## Accordion
+## Accordion - controlled Expansion Panel
 
 Extend the default panel behavior to create an accordion with the `ExpansionPanel` component.
 

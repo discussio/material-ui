@@ -21,7 +21,11 @@ function SimpleExpansionPanel(props) {
   const classes = props.classes;
   return (
     <div className={classes.root}>
-      <ExpansionPanel headerTitle="Expansion panel title" expandIcon={<ExpandMoreIcon />}>
+      <ExpansionPanel
+        headerTitle="Expansion panel title"
+        expandIcon={<ExpandMoreIcon />}
+        defaultExpanded
+      >
         <Typography className={classes.content} component="p">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
           sit amet blandit leo lobortis eget.
