@@ -81,19 +81,36 @@ const enableTabbing = '0';
 const disableTabbing = '-1';
 
 class ExpansionPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: props.expanded,
-      focused: false,
-    };
+  static defaultProps = {
+    disabled: false,
+    expandIcon: null,
+    headerTitle: '',
+    onChange: () => {},
+    unmountOnExit: false,
+  };
+
+  state = {
+    expanded: false,
+    focused: false,
+  };
+
+  componentWillMount() {
+    const { expanded, defaultExpanded } = this.props;
+    this.isControlled = expanded !== undefined;
+    this.setState({
+      expanded: this.isControlled ? expanded : defaultExpanded,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      expanded: nextProps.expanded,
-    });
+    if (this.isControlled) {
+      this.setState({
+        expanded: nextProps.expanded,
+      });
+    }
   }
+
+  isControlled = null;
 
   onHeaderKeyUp({ keyCode }) {
     if (keyCode === codes.enter || keyCode === codes.space) {
@@ -120,7 +137,9 @@ class ExpansionPanel extends Component {
     }
     const expand = !this.state.expanded;
     onChange(this, expand);
-    this.setState({ expanded: expand });
+    if (!this.isControlled) {
+      this.setState({ expanded: expand });
+    }
   };
 
   renderHeader() {
@@ -210,11 +229,16 @@ ExpansionPanel.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * If `true`, expands the panel by default.
+   */
+  defaultExpanded: PropTypes.bool,
+  /**
    * If `true`, the panel should be displayed in a disabled state.
    */
   disabled: PropTypes.bool,
   /**
    * If `true`, expands the panel, otherwise collapse it.
+   * Setting this prop enables control over the panel.
    */
   expanded: PropTypes.bool,
   /**
@@ -237,15 +261,6 @@ ExpansionPanel.propTypes = {
    * Unmounts the child elements after collapse the panel.
    */
   unmountOnExit: PropTypes.bool,
-};
-
-ExpansionPanel.defaultProps = {
-  disabled: false,
-  expanded: false,
-  expandIcon: null,
-  headerTitle: '',
-  onChange: () => {},
-  unmountOnExit: false,
 };
 
 export default withStyles(styleSheet)(ExpansionPanel);
