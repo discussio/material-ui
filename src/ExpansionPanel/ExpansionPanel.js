@@ -3,12 +3,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Card, Typography, IconButton, CardActions, CardContent } from '../';
+import { codes } from 'keycode';
+import { Card, Typography, IconButton } from '../';
 import Collapse from '../transitions/Collapse';
 import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-const styleSheet = createStyleSheet('ExpansionPanel', theme => ({
+const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
   card: {
     margin: 0,
     transition: theme.transitions.create('margin', {
@@ -20,7 +21,7 @@ const styleSheet = createStyleSheet('ExpansionPanel', theme => ({
     color: theme.palette.text.disabled,
   },
   cardExpanded: {
-    margin: [16, 0],
+    margin: [theme.spacing.unit * 2, 0],
     '&:first-child': {
       marginTop: 0,
     },
@@ -36,25 +37,21 @@ const styleSheet = createStyleSheet('ExpansionPanel', theme => ({
     transition: theme.transitions.create('height', {
       duration: theme.transitions.duration.shortest,
     }),
-    padding: [0, 24],
-    '&:last-child': {
-      paddingBottom: 0,
-    },
+    padding: [0, theme.spacing.unit * 3],
   },
   headerFocused: {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.grey[300],
   },
   headerExpanded: {
     height: 64,
   },
-  headerClickable: {
+  headerEnabled: {
     '&:hover': {
       cursor: 'pointer',
     },
   },
-  headerTitle: {
-    fontSize: 16,
-    color: theme.palette.text.primary,
+  headerDisabled: {
+    opacity: 0.38,
   },
   content: {
     padding: 0,
@@ -63,7 +60,7 @@ const styleSheet = createStyleSheet('ExpansionPanel', theme => ({
   expand: {
     width: 40,
     height: 40,
-    marginRight: -16,
+    marginRight: -theme.spacing.unit * 2,
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
@@ -83,17 +80,10 @@ const styleSheet = createStyleSheet('ExpansionPanel', theme => ({
 const enableTabbing = '0';
 const disableTabbing = '-1';
 
-/**
- * Non-visible element to manage an interactive keyboard focus state
- * for the ExpansionPanel component
- */
-const KeyboardFocusHolder = props => <div {...props} />;
-
 class ExpansionPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO: fix this
       expanded: props.expanded,
       focused: false,
     };
@@ -106,8 +96,7 @@ class ExpansionPanel extends Component {
   }
 
   onHeaderKeyUp({ keyCode }) {
-    // TODO: handle ENTER or SPACE pressed
-    if (keyCode === 13 || keyCode === 32) {
+    if (keyCode === codes.enter || keyCode === codes.space) {
       this.handleExpand();
     }
   }
@@ -134,26 +123,62 @@ class ExpansionPanel extends Component {
     this.setState({ expanded: expand });
   };
 
-  handleContentClick = () => {
-    const { disabled, onContentClick } = this.props;
-    if (!disabled) {
-      onContentClick(this);
-    }
-  };
+  renderHeader() {
+    const ComponentProp = 'div';
+    const { classes, disabled, expandIcon, headerTitle, headerTitleProps } = this.props;
+    const { expanded, focused } = this.state;
+    return (
+      <ComponentProp
+        className={classNames(classes.header, {
+          [classes.headerEnabled]: !disabled,
+          [classes.headerExpanded]: expanded,
+          [classes.headerFocused]: focused,
+        })}
+        onClick={this.handleExpand}
+      >
+        <Typography
+          type="body2"
+          component="span"
+          className={classNames(classes.headerTitle, {
+            [classes.headerDisabled]: disabled,
+          })}
+          {...headerTitleProps}
+        >
+          {headerTitle}
+        </Typography>
+        {expandIcon &&
+          <IconButton
+            disabled={disabled}
+            className={classNames(classes.expand, {
+              [classes.expandOpen]: expanded,
+            })}
+            component="div"
+            tabIndex={disableTabbing}
+            onClick={this.handleExpand}
+          >
+            {expandIcon}
+          </IconButton>}
+      </ComponentProp>
+    );
+  }
+
+  renderKeyboardFocusHolder() {
+    const ComponentProp = 'div';
+    const { classes, disabled } = this.props;
+    return (
+      <ComponentProp
+        className={classes.focusHolder}
+        tabIndex={!disabled && enableTabbing}
+        onKeyUp={e => this.onHeaderKeyUp(e)}
+        onFocus={() => this.handleFocus()}
+        onBlur={() => this.handleBlur()}
+      />
+    );
+  }
 
   render() {
-    const {
-      children,
-      classes,
-      className,
-      disabled,
-      expandIcon,
-      headerTitle,
-      unmountOnExit,
-    } = this.props;
-
-    const { expanded, focused } = this.state;
-
+    const { children, classes, className, disabled, unmountOnExit } = this.props;
+    const { expanded } = this.state;
     return (
       <Card
         className={classNames(className, classes.card, {
@@ -161,43 +186,10 @@ class ExpansionPanel extends Component {
           [classes.cardExpanded]: expanded,
         })}
       >
-        <CardContent
-          className={classNames(classes.header, {
-            [classes.headerClickable]: !disabled,
-            [classes.headerExpanded]: expanded,
-            [classes.headerFocused]: focused,
-          })}
-          onClick={this.handleExpand}
-        >
-          <Typography className={classes.headerTitle}>
-            <span className={disabled && classes.cardDisabled}>
-              {headerTitle}
-            </span>
-          </Typography>
-          <CardActions className={classes.actions}>
-            <IconButton
-              disabled={disabled}
-              className={classNames(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              tabIndex={disableTabbing}
-              onClick={this.handleExpand}
-            >
-              {expandIcon}
-            </IconButton>
-          </CardActions>
-        </CardContent>
-        <KeyboardFocusHolder
-          className={classes.focusHolder}
-          tabIndex={!disabled && enableTabbing}
-          onKeyUp={e => this.onHeaderKeyUp(e)}
-          onFocus={() => this.handleFocus()}
-          onBlur={() => this.handleBlur()}
-        />
+        {this.renderHeader()}
+        {this.renderKeyboardFocusHolder()}
         <Collapse in={expanded} transitionDuration="auto" unmountOnExit={unmountOnExit}>
-          <CardContent className={classes.content} onClick={this.handleContentClick}>
-            {children}
-          </CardContent>
+          {children}
         </Collapse>
       </Card>
     );
@@ -206,54 +198,54 @@ class ExpansionPanel extends Component {
 
 ExpansionPanel.propTypes = {
   /**
-   * Pass child components
+   * The content of the expansion panel.
    */
-  children: PropTypes.object,
+  children: PropTypes.node,
   /**
-   * Pass css classes definitions
+   * Useful to extend the style applied to components.
    */
   classes: PropTypes.object,
   /**
-   * Sets the class name of the root element
+   * @ignore
    */
   className: PropTypes.string,
   /**
-   * Sets disable state of the panel
+   * If `true`, the panel should be displayed in a disabled state.
    */
   disabled: PropTypes.bool,
   /**
-   * Expands or collapses the panel
+   * If `true`, expands the panel, otherwise collapse it.
    */
   expanded: PropTypes.bool,
   /**
-   * Sets the title of the panel header
+   * The icon to display as the expand indicator.
    */
-  headerTitle: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  expandIcon: PropTypes.node,
   /**
-   * Unmounts the child elements after collapse the panel
-   * Pay attention to (redux) forms
+   * Sets the title of the panel header.
    */
-  unmountOnExit: PropTypes.bool,
+  headerTitle: PropTypes.node,
   /**
-   * Fired on every expand/collapse state change
+   * Properties applied to the header title Typography element.
+   */
+  headerTitleProps: PropTypes.object,
+  /**
+   * Callback fired on every expand/collapse state change.
    */
   onChange: PropTypes.func,
   /**
-   * Fired when the user clicks on expanded content of the panel
+   * Unmounts the child elements after collapse the panel.
    */
-  onContentClick: PropTypes.func,
+  unmountOnExit: PropTypes.bool,
 };
 
 ExpansionPanel.defaultProps = {
-  children: null,
-  classes: {},
-  className: '',
   disabled: false,
   expanded: false,
+  expandIcon: null,
   headerTitle: '',
+  onChange: () => {},
   unmountOnExit: false,
-  onChange: () => true,
-  onContentClick: () => {},
 };
 
 export default withStyles(styleSheet)(ExpansionPanel);
