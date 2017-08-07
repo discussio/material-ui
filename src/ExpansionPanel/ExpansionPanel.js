@@ -271,7 +271,7 @@ ExpansionPanel.propTypes = {
    */
   children: PropTypes.node,
   /**
-   * Allows to [extend](#css-api) the style applied to components.
+   * Allows to [extend the style](#css-api) applied to components.
    */
   classes: PropTypes.object,
   /**

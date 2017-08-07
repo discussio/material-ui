@@ -8,7 +8,7 @@
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | children | node |  | The content of the expansion panel. |
-| classes | object |  | Allows to extend the style applied to components. |
+| classes | object |  | Allows to [extend the style](#css-api) applied to components. |
 | defaultExpanded | bool |  | If `true`, expands the panel by default. |
 | disableHeaderTypography | bool | false | If `true`, the header title won't be wrapped by a typography component. For instance, that can be usefull to render an own component instead of h3 |
 | disabled | bool | false | If `true`, the panel will be displayed in a disabled state. |
@@ -28,13 +28,11 @@ This property accepts the following keys:
 - `root`
 - `header`
 - `headerTitle`
-- `headerContent`
 - `expandButton`
 - `hover`
 - `expanded`
 - `focused`
 - `disabled`
-- `focusHolder`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
