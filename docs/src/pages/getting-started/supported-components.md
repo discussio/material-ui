@@ -52,7 +52,7 @@ to discuss the approach before submitting a PR.
 - **[Dividers](https://www.google.com/design/spec/components/dividers.html) ✓**
   - **[Full bleed](https://www.google.com/design/spec/components/dividers.html#dividers-types-of-dividers) ✓**
   - **[Inset](https://www.google.com/design/spec/components/dividers.html#dividers-types-of-dividers) ✓**
-- [Expansion Panels](https://www.google.com/design/spec/components/expansion-panels.html)
+- **[Expansion Panels](https://www.google.com/design/spec/components/expansion-panels.html) ✓**
 - [Grid lists](https://www.google.com/design/spec/components/grid-lists.html)
 - **[Lists](https://www.google.com/design/spec/components/lists.html) ✓**
   - **[Single line](https://www.google.com/design/spec/components/lists.html#lists-specs) ✓**
