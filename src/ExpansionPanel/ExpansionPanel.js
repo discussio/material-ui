@@ -307,12 +307,12 @@ ExpansionPanel.propTypes = {
    */
   defaultExpanded: PropTypes.bool,
   /**
-   * If `true`, the panel should be displayed in a disabled state.
+   * If `true`, the panel will be displayed in a disabled state.
    */
   disabled: PropTypes.bool,
   /**
    * If `true`, the header title won't be wrapped by a typography component.
-   * For instance, that can be usefull to can render an own component instead of h3
+   * For instance, that can be usefull to render an own component instead of h3
    */
   disableHeaderTypography: PropTypes.bool,
   /**

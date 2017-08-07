@@ -7,15 +7,15 @@ import ExpansionPanel from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = createStyleSheet({
+const styleSheet = createStyleSheet(theme => ({
   root: {
     marginTop: 30,
     width: '100%',
   },
   content: {
-    padding: 24,
+    padding: theme.spacing.unit * 3,
   },
-});
+}));
 
 function SimpleExpansionPanel(props) {
   const classes = props.classes;
@@ -29,6 +29,16 @@ function SimpleExpansionPanel(props) {
         <Typography className={classes.content} component="p">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
           sit amet blandit leo lobortis eget.
+        </Typography>
+      </ExpansionPanel>
+
+      <ExpansionPanel
+        headerTitle="Disabled Expansion Panel"
+        expandIcon={<ExpandMoreIcon />}
+        disabled
+      >
+        <Typography className={classes.content} component="p">
+          Lorem ipsum dolor sit amet.
         </Typography>
       </ExpansionPanel>
     </div>

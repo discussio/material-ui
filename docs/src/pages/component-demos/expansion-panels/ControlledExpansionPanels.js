@@ -10,20 +10,20 @@ import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = createStyleSheet({
+const styleSheet = createStyleSheet(theme => ({
   root: {
     marginTop: 30,
     width: '100%',
   },
   content: {
-    padding: 24,
+    padding: theme.spacing.unit * 3,
   },
   actions: {
     height: 64,
-    padding: [0, 8],
+    padding: [0, theme.spacing.unit],
     justifyContent: 'flex-end',
   },
-});
+}));
 
 class ControlledExpansionPanels extends Component {
   state = {
