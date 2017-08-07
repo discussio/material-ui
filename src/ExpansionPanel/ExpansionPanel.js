@@ -5,127 +5,113 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import { Paper, Typography, IconButton } from '../';
+import ButtonBase from '../internal/ButtonBase';
 import Collapse from '../transitions/Collapse';
 import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
-  root: {
-    position: 'relative',
-    boxShadow: theme.shadows[1],
-    margin: 0,
-    transition: theme.transitions.create(['margin'], {
-      duration: theme.transitions.duration.shortest,
-      easing: theme.transitions.easing.ease,
-    }),
-    '&:before': {
-      position: 'absolute',
-      left: 0,
-      top: -1,
-      right: 0,
-      height: 1,
-      content: '""',
-      opacity: 1,
-      backgroundColor: theme.palette.text.divider,
-      transition: theme.transitions.create('opacity', {
-        duration: theme.transitions.duration.shortest,
-        easing: theme.transitions.easing.ease,
-      }),
-    },
-    '&:first-child': {
-      borderTopLeftRadius: 2,
-      borderTopRightRadius: 2,
+export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => {
+  const transition = {
+    duration: theme.transitions.duration.shortest,
+    easing: theme.transitions.easing.ease,
+  };
+  return {
+    root: {
+      position: 'relative',
+      boxShadow: theme.shadows[1],
+      margin: 0,
+      transition: theme.transitions.create(['margin'], transition),
       '&:before': {
-        display: 'none',
+        position: 'absolute',
+        left: 0,
+        top: -1,
+        right: 0,
+        height: 1,
+        content: '""',
+        opacity: 1,
+        backgroundColor: theme.palette.text.divider,
+        transition: theme.transitions.create(['opacity', 'background-color'], transition),
       },
-    },
-    '&:last-child': {
-      borderBottomLeftRadius: 2,
-      borderBottomRightRadius: 2,
-    },
-    '&$focused + &': {
-      '&:before': {
-        backgroundColor: theme.palette.grey[300],
-      },
-    },
-    '&$expanded': {
-      margin: [theme.spacing.unit * 2, 0],
       '&:first-child': {
-        marginTop: 0,
+        borderTopLeftRadius: 2,
+        borderTopRightRadius: 2,
+        '&:before': {
+          display: 'none',
+        },
       },
       '&:last-child': {
-        marginBottom: 0,
+        borderBottomLeftRadius: 2,
+        borderBottomRightRadius: 2,
       },
-      '&:before': {
-        opacity: 0,
+      '&$focused + &': {
+        '&:before': {
+          backgroundColor: theme.palette.grey[300],
+        },
+      },
+      '&$expanded': {
+        margin: [theme.spacing.unit * 2, 0],
+        '&:first-child': {
+          marginTop: 0,
+        },
+        '&:last-child': {
+          marginBottom: 0,
+        },
+        '&:before': {
+          opacity: 0,
+        },
+      },
+      '&$expanded + &': {
+        '&:before': {
+          display: 'none',
+        },
+      },
+      '&$disabled': {
+        backgroundColor: theme.palette.grey[200],
       },
     },
-    '&$expanded + &': {
-      '&:before': {
-        display: 'none',
+    header: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 48,
+      transition: theme.transitions.create(['height', 'background-color'], transition),
+      padding: [0, theme.spacing.unit * 3],
+      '&:hover:not($disabled)': {
+        cursor: 'pointer',
+      },
+      '&$focused': {
+        backgroundColor: theme.palette.grey[300],
+      },
+      '&$expanded': {
+        height: 64,
+      },
+      '&$disabled': {
+        opacity: 0.38,
       },
     },
-    '&$disabled': {
-      backgroundColor: theme.palette.grey[200],
+    headerTitle: {
+      fontSize: 15,
+      fontWeight: theme.typography.fontWeightRegular,
     },
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 48,
-    transition: theme.transitions.create(['height', 'background-color'], {
-      duration: theme.transitions.duration.shortest,
-    }),
-    padding: [0, theme.spacing.unit * 3],
-    '&:hover:not($disabled)': {
-      cursor: 'pointer',
+    expandButton: {
+      width: 40,
+      height: 40,
+      marginRight: -theme.spacing.unit,
+      color: theme.palette.text.icon,
+      transform: 'rotate(0deg)',
+      transition: theme.transitions.create('transform', transition),
+      '&$expanded': {
+        transform: 'rotate(180deg)',
+      },
     },
-    '&$focused': {
-      backgroundColor: theme.palette.grey[300],
+    hover: {},
+    expanded: {},
+    focused: {},
+    disabled: {
+      color: theme.palette.action.disabled,
     },
-    '&$expanded': {
-      height: 64,
-    },
-    '&$disabled': {
-      opacity: 0.38,
-    },
-  },
-  headerTitle: {
-    flexBasis: '25%',
-    fontSize: 15,
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-  headerContent: {
-    flexBasis: '50%',
-    fontSize: 15,
-  },
-  expandButton: {
-    width: 40,
-    height: 40,
-    marginRight: -theme.spacing.unit,
-    color: theme.palette.text.icon,
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    '&$expanded': {
-      transform: 'rotate(180deg)',
-    },
-  },
-  hover: {},
-  expanded: {},
-  focused: {},
-  disabled: {
-    color: theme.palette.action.disabled,
-  },
-  focusHolder: {
-    position: 'absolute',
-    '&:focus': {
-      outline: 'none',
-    },
-  },
-}));
+  };
+});
 
 class ExpansionPanel extends Component {
   static defaultProps = {
@@ -192,7 +178,6 @@ class ExpansionPanel extends Component {
   };
 
   renderHeader() {
-    const ComponentProp = 'div';
     const {
       classes,
       disabled,
@@ -203,12 +188,18 @@ class ExpansionPanel extends Component {
     } = this.props;
     const { expanded, focused } = this.state;
     return (
-      <ComponentProp
+      <ButtonBase
+        focusRipple={false}
+        disableRipple
+        disabled={disabled}
+        component="div"
         className={classNames(classes.header, {
           [classes.disabled]: disabled,
           [classes.expanded]: expanded,
           [classes.focused]: focused,
         })}
+        onKeyboardFocus={this.handleFocus}
+        onBlur={this.handleBlur}
         onClick={this.handleChange}
       >
         {disableHeaderTypography
@@ -234,21 +225,7 @@ class ExpansionPanel extends Component {
           >
             {expandIcon}
           </IconButton>}
-      </ComponentProp>
-    );
-  }
-
-  renderKeyboardFocusHolder() {
-    const ComponentProp = 'div';
-    const { classes, disabled } = this.props;
-    return (
-      <ComponentProp
-        className={classes.focusHolder}
-        tabIndex={!disabled && '0'}
-        onKeyUp={this.handleHeaderKeyUp}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-      />
+      </ButtonBase>
     );
   }
 
@@ -280,7 +257,6 @@ class ExpansionPanel extends Component {
     return (
       <Paper className={className} elevation={0} square {...other}>
         {this.renderHeader()}
-        {this.renderKeyboardFocusHolder()}
         <Collapse in={this.state.expanded} transitionDuration="auto" unmountOnExit={unmountOnExit}>
           {children}
         </Collapse>
@@ -295,7 +271,7 @@ ExpansionPanel.propTypes = {
    */
   children: PropTypes.node,
   /**
-   * Allows to extend the style applied to components.
+   * Allows to [extend](#css-api) the style applied to components.
    */
   classes: PropTypes.object,
   /**
