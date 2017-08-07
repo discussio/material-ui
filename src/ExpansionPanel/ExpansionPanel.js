@@ -3,30 +3,70 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { codes } from 'keycode';
-import { Card, Typography, IconButton } from '../';
+import keycode from 'keycode';
+import { Paper, Typography, IconButton } from '../';
 import Collapse from '../transitions/Collapse';
 import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
   root: {
+    position: 'relative',
+    boxShadow: theme.shadows[1],
     margin: 0,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create(['margin'], {
       duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.ease,
     }),
-  },
-  disabled: {
-    backgroundColor: theme.palette.grey[200],
-    color: theme.palette.text.disabled,
-  },
-  expanded: {
-    margin: [theme.spacing.unit * 2, 0],
+    '&:before': {
+      position: 'absolute',
+      left: 0,
+      top: -1,
+      right: 0,
+      height: 1,
+      content: '""',
+      opacity: 1,
+      backgroundColor: theme.palette.text.divider,
+      transition: theme.transitions.create('opacity', {
+        duration: theme.transitions.duration.shortest,
+        easing: theme.transitions.easing.ease,
+      }),
+    },
     '&:first-child': {
-      marginTop: 0,
+      borderTopLeftRadius: 2,
+      borderTopRightRadius: 2,
+      '&:before': {
+        display: 'none',
+      },
     },
     '&:last-child': {
-      marginBottom: 0,
+      borderBottomLeftRadius: 2,
+      borderBottomRightRadius: 2,
+    },
+    '&$focused + &': {
+      '&:before': {
+        backgroundColor: theme.palette.grey[300],
+      },
+    },
+    '&$expanded': {
+      margin: [theme.spacing.unit * 2, 0],
+      '&:first-child': {
+        marginTop: 0,
+      },
+      '&:last-child': {
+        marginBottom: 0,
+      },
+      '&:before': {
+        opacity: 0,
+      },
+    },
+    '&$expanded + &': {
+      '&:before': {
+        display: 'none',
+      },
+    },
+    '&$disabled': {
+      backgroundColor: theme.palette.grey[200],
     },
   },
   header: {
@@ -34,36 +74,50 @@ export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 48,
-    transition: theme.transitions.create('height', {
+    transition: theme.transitions.create(['height', 'background-color'], {
       duration: theme.transitions.duration.shortest,
     }),
     padding: [0, theme.spacing.unit * 3],
-  },
-  headerFocused: {
-    backgroundColor: theme.palette.grey[300],
-  },
-  headerExpanded: {
-    height: 64,
-  },
-  headerHover: {
-    '&:hover': {
+    '&:hover:not($disabled)': {
       cursor: 'pointer',
     },
+    '&$focused': {
+      backgroundColor: theme.palette.grey[300],
+    },
+    '&$expanded': {
+      height: 64,
+    },
+    '&$disabled': {
+      opacity: 0.38,
+    },
   },
-  headerDisabled: {
-    opacity: 0.38,
+  headerTitle: {
+    flexBasis: '25%',
+    fontSize: 15,
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  headerContent: {
+    flexBasis: '50%',
+    fontSize: 15,
   },
   expandButton: {
     width: 40,
     height: 40,
-    marginRight: -theme.spacing.unit * 2,
+    marginRight: -theme.spacing.unit,
+    color: theme.palette.text.icon,
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
+    '&$expanded': {
+      transform: 'rotate(180deg)',
+    },
   },
-  expandButtonOpen: {
-    transform: 'rotate(180deg)',
+  hover: {},
+  expanded: {},
+  focused: {},
+  disabled: {
+    color: theme.palette.action.disabled,
   },
   focusHolder: {
     position: 'absolute',
@@ -73,14 +127,11 @@ export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => ({
   },
 }));
 
-const enableTabbing = '0';
-const disableTabbing = '-1';
-
 class ExpansionPanel extends Component {
   static defaultProps = {
     disabled: false,
     expandIcon: null,
-    onChange: () => {},
+    disableHeaderTypography: false,
     unmountOnExit: false,
   };
 
@@ -107,31 +158,34 @@ class ExpansionPanel extends Component {
 
   isControlled = null;
 
-  onHeaderKeyUp({ keyCode }) {
-    if (keyCode === codes.enter || keyCode === codes.space) {
-      this.handleExpand();
+  handleHeaderKeyUp = event => {
+    const code = keycode(event);
+    if (code === 'enter' || code === 'space') {
+      this.handleChange();
     }
-  }
+  };
 
-  handleFocus() {
+  handleFocus = () => {
     this.setState({
       focused: true,
     });
-  }
+  };
 
-  handleBlur() {
+  handleBlur = () => {
     this.setState({
       focused: false,
     });
-  }
+  };
 
-  handleExpand = () => {
+  handleChange = () => {
     const { disabled, onChange } = this.props;
     if (disabled) {
       return;
     }
     const expand = !this.state.expanded;
-    onChange(this, expand);
+    if (onChange) {
+      onChange(this, expand);
+    }
     if (!this.isControlled) {
       this.setState({ expanded: expand });
     }
@@ -139,36 +193,44 @@ class ExpansionPanel extends Component {
 
   renderHeader() {
     const ComponentProp = 'div';
-    const { classes, disabled, expandIcon, headerTitle, headerTitleProps } = this.props;
+    const {
+      classes,
+      disabled,
+      disableHeaderTypography,
+      expandIcon,
+      headerTitle,
+      headerTitleProps,
+    } = this.props;
     const { expanded, focused } = this.state;
     return (
       <ComponentProp
         className={classNames(classes.header, {
-          [classes.headerHover]: !disabled,
-          [classes.headerExpanded]: expanded,
-          [classes.headerFocused]: focused,
+          [classes.disabled]: disabled,
+          [classes.expanded]: expanded,
+          [classes.focused]: focused,
         })}
-        onClick={this.handleExpand}
+        onClick={this.handleChange}
       >
-        <Typography
-          type="body2"
-          component="span"
-          className={classNames(classes.headerTitle, {
-            [classes.headerDisabled]: disabled,
-          })}
-          {...headerTitleProps}
-        >
-          {headerTitle}
-        </Typography>
+        {disableHeaderTypography
+          ? headerTitle
+          : <Typography
+              type="subheading"
+              className={classNames(classes.headerTitle, {
+                [classes.headerDisabled]: disabled,
+              })}
+              {...headerTitleProps}
+            >
+              {headerTitle}
+            </Typography>}
         {expandIcon &&
           <IconButton
             disabled={disabled}
             className={classNames(classes.expandButton, {
-              [classes.expandButtonOpen]: expanded,
+              [classes.expanded]: expanded,
             })}
             component="div"
-            tabIndex={disableTabbing}
-            onClick={this.handleExpand}
+            tabIndex="-1"
+            onClick={this.handleChange}
           >
             {expandIcon}
           </IconButton>}
@@ -182,30 +244,47 @@ class ExpansionPanel extends Component {
     return (
       <ComponentProp
         className={classes.focusHolder}
-        tabIndex={!disabled && enableTabbing}
-        onKeyUp={e => this.onHeaderKeyUp(e)}
-        onFocus={() => this.handleFocus()}
-        onBlur={() => this.handleBlur()}
+        tabIndex={!disabled && '0'}
+        onKeyUp={this.handleHeaderKeyUp}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
       />
     );
   }
 
   render() {
-    const { children, classes, className, disabled, unmountOnExit } = this.props;
-    const { expanded } = this.state;
+    const {
+      children,
+      classes,
+      className: classNameProp,
+      defaultExpanded,
+      disabled,
+      disableHeaderTypography,
+      expanded,
+      expandIcon,
+      headerTitle,
+      unmountOnExit,
+      ...other
+    } = this.props;
+
+    const className = classNames(
+      {
+        [classes.root]: true,
+        [classes.focused]: this.state.focused,
+        [classes.expanded]: this.state.expanded,
+        [classes.disabled]: disabled,
+      },
+      classNameProp,
+    );
+
     return (
-      <Card
-        className={classNames(className, classes.root, {
-          [classes.disabled]: disabled,
-          [classes.expanded]: expanded,
-        })}
-      >
+      <Paper className={className} elevation={0} square {...other}>
         {this.renderHeader()}
         {this.renderKeyboardFocusHolder()}
-        <Collapse in={expanded} transitionDuration="auto" unmountOnExit={unmountOnExit}>
+        <Collapse in={this.state.expanded} transitionDuration="auto" unmountOnExit={unmountOnExit}>
           {children}
         </Collapse>
-      </Card>
+      </Paper>
     );
   }
 }
@@ -214,9 +293,9 @@ ExpansionPanel.propTypes = {
   /**
    * The content of the expansion panel.
    */
-  children: PropTypes.element,
+  children: PropTypes.node,
   /**
-   * Useful to extend the style applied to components.
+   * Allows to extend the style applied to components.
    */
   classes: PropTypes.object,
   /**
@@ -232,6 +311,11 @@ ExpansionPanel.propTypes = {
    */
   disabled: PropTypes.bool,
   /**
+   * If `true`, the header title won't be wrapped by a typography component.
+   * For instance, that can be usefull to can render an own component instead of h3
+   */
+  disableHeaderTypography: PropTypes.bool,
+  /**
    * If `true`, expands the panel, otherwise collapse it.
    * Setting this prop enables control over the panel.
    */
@@ -243,7 +327,7 @@ ExpansionPanel.propTypes = {
   /**
    * Sets the title of the panel header.
    */
-  headerTitle: PropTypes.element,
+  headerTitle: PropTypes.node,
   /**
    * Properties applied to the header title Typography element.
    */
@@ -253,7 +337,7 @@ ExpansionPanel.propTypes = {
    */
   onChange: PropTypes.func,
   /**
-   * Unmounts the child elements after collapse the panel.
+   * If `true`, unmounts the child elements after collapse the panel.
    */
   unmountOnExit: PropTypes.bool,
 };
