@@ -3,10 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
-import { createStyleSheet, withStyles } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = (theme: Object) => ({
   root: {
     width: 400,
     backgroundColor: theme.palette.primary.A400,
@@ -15,15 +15,15 @@ const styleSheet = createStyleSheet(theme => ({
     padding: 16,
     textAlign: 'center',
   },
-}));
+});
 
 function StressGrid(props) {
   const { classes } = props;
 
   return (
     <div className={classes.root}>
-      <Grid container gutter={24} direction="column">
-        <Grid container item gutter={8}>
+      <Grid container spacing={24} direction="column">
+        <Grid container item spacing={8}>
           <Grid item xs={3}>
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
@@ -31,7 +31,7 @@ function StressGrid(props) {
             <Paper className={classes.paper}>xs=9</Paper>
           </Grid>
         </Grid>
-        <Grid container item gutter={8} direction="row-reverse">
+        <Grid container item spacing={8} direction="row-reverse">
           <Grid item xs={3}>
             <Paper className={classes.paper}>first</Paper>
           </Grid>
@@ -39,7 +39,7 @@ function StressGrid(props) {
             <Paper className={classes.paper}>last</Paper>
           </Grid>
         </Grid>
-        <Grid container item gutter={8} justify="space-between">
+        <Grid container item spacing={8} justify="space-between">
           <Grid item xs={3}>
             <Paper className={classes.paper}>space</Paper>
           </Grid>
@@ -47,7 +47,7 @@ function StressGrid(props) {
             <Paper className={classes.paper}>between</Paper>
           </Grid>
         </Grid>
-        <Grid container item gutter={8} align="stretch" direction="column-reverse">
+        <Grid container item spacing={8} align="stretch" direction="column-reverse">
           <Grid item>
             <Paper className={classes.paper}>reverse</Paper>
           </Grid>
@@ -64,4 +64,4 @@ StressGrid.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(StressGrid);
+export default withStyles(styles)(StressGrid);

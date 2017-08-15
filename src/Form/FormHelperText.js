@@ -4,10 +4,9 @@ import React from 'react';
 import type { Element } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiFormHelperText', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     color: theme.palette.input.helperText,
     fontFamily: theme.typography.fontFamily,
@@ -27,9 +26,13 @@ export const styleSheet = createStyleSheet('MuiFormHelperText', theme => ({
   disabled: {
     color: theme.palette.input.disabled,
   },
-}));
+});
 
-type Props = {
+type DefaultProps = {
+  classes: Object,
+};
+
+export type Props = {
   /**
    * The content of the component.
    */
@@ -37,7 +40,7 @@ type Props = {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -57,7 +60,9 @@ type Props = {
   margin?: 'dense',
 };
 
-function FormHelperText(props: Props, context: { muiFormControl: Object }) {
+type AllProps = DefaultProps & Props;
+
+function FormHelperText(props: AllProps, context: { muiFormControl: Object }) {
   const {
     children,
     classes,
@@ -108,4 +113,4 @@ FormHelperText.contextTypes = {
   muiFormControl: PropTypes.object,
 };
 
-export default withStyles(styleSheet)(FormHelperText);
+export default withStyles(styles, { name: 'MuiFormHelperText' })(FormHelperText);

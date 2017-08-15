@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import keycode from 'keycode';
 import Table, {
   TableBody,
@@ -37,6 +37,7 @@ const columnData = [
 
 class EnhancedTableHead extends Component {
   static propTypes = {
+    numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
@@ -48,13 +49,17 @@ class EnhancedTableHead extends Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy } = this.props;
+    const { onSelectAllClick, order, orderBy, numSelected } = this.props;
 
     return (
       <TableHead>
         <TableRow>
           <TableCell checkbox>
-            <Checkbox onChange={onSelectAllClick} />
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < 5}
+              checked={numSelected === 5}
+              onChange={onSelectAllClick}
+            />
           </TableCell>
           {columnData.map(column => {
             return (
@@ -79,7 +84,7 @@ class EnhancedTableHead extends Component {
   }
 }
 
-const toolbarStyleSheet = createStyleSheet(theme => ({
+const toolbarStyles = theme => ({
   root: {
     paddingRight: 2,
   },
@@ -102,7 +107,7 @@ const toolbarStyleSheet = createStyleSheet(theme => ({
   title: {
     flex: '0 0 auto',
   },
-}));
+});
 
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
@@ -139,15 +144,15 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-EnhancedTableToolbar = withStyles(toolbarStyleSheet)(EnhancedTableToolbar);
+EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = theme => ({
   paper: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
-}));
+});
 
 class EnhancedTable extends Component {
   state = {
@@ -224,6 +229,7 @@ class EnhancedTable extends Component {
         <EnhancedTableToolbar numSelected={selected.length} />
         <Table>
           <EnhancedTableHead
+            numSelected={selected.length}
             order={order}
             orderBy={orderBy}
             onSelectAllClick={this.handleSelectAllClick}
@@ -275,4 +281,4 @@ EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(EnhancedTable);
+export default withStyles(styles)(EnhancedTable);

@@ -5,7 +5,7 @@ import type StyleSheet from 'jss/lib/StyleSheet';
 import type { Rule, generateClassName } from 'jss/lib/types';
 
 // Returns a function which generates unique class names based on counters.
-// When new generator function is created, rule counter is reseted.
+// When new generator function is created, rule counter is reset.
 // We need to reset the rule counter for SSR for each request.
 //
 // It's an improved version of
@@ -18,7 +18,7 @@ export default function createGenerateClassName(): generateClassName {
     warning(
       ruleCounter < 1e10,
       [
-        'Material-UI: You might have a memory leak.',
+        'Material-UI: you might have a memory leak.',
         'The ruleCounter is not supposed to grow that much.',
       ].join(''),
     );

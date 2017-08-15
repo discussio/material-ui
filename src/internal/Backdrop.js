@@ -3,10 +3,9 @@
 import React from 'react';
 import type { Element } from 'react';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiBackdrop', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     zIndex: -1,
     width: '100%',
@@ -14,7 +13,7 @@ export const styleSheet = createStyleSheet('MuiBackdrop', theme => ({
     position: 'fixed',
     top: 0,
     left: 0,
-    // Remove Gray Highlight
+    // Remove grey highlight
     WebkitTapHighlightColor: theme.palette.common.transparent,
     backgroundColor: theme.palette.common.lightBlack,
     transition: theme.transitions.create('opacity'),
@@ -24,9 +23,13 @@ export const styleSheet = createStyleSheet('MuiBackdrop', theme => ({
   invisible: {
     backgroundColor: theme.palette.common.transparent,
   },
-}));
+});
 
-type Props = {
+type DefaultProps = {
+  classes: Object,
+};
+
+export type Props = {
   /**
    * Can be used, for instance, to render a letter inside the avatar.
    */
@@ -34,7 +37,7 @@ type Props = {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -45,10 +48,12 @@ type Props = {
   invisible?: boolean,
 };
 
+type AllProps = DefaultProps & Props;
+
 /**
  * @ignore - internal component.
  */
-function Backdrop(props: Props) {
+function Backdrop(props: AllProps) {
   const { children, classes, className, invisible, ...other } = props;
 
   const backdropClass = classNames(
@@ -70,4 +75,4 @@ Backdrop.defaultProps = {
   invisible: false,
 };
 
-export default withStyles(styleSheet)(Backdrop);
+export default withStyles(styles, { name: 'MuiBackdrop' })(Backdrop);

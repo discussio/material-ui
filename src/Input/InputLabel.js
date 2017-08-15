@@ -1,13 +1,13 @@
-// @flow weak
+// @flow
 
 import React from 'react';
+import type { Element } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import { FormLabel } from '../Form';
 
-export const styleSheet = createStyleSheet('MuiInputLabel', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     transformOrigin: 'top left',
   },
@@ -31,9 +31,56 @@ export const styleSheet = createStyleSheet('MuiInputLabel', theme => ({
   disabled: {
     color: theme.palette.input.disabled,
   },
-}));
+});
 
-function InputLabel(props, context) {
+type DefaultProps = {
+  classes: Object,
+  disabled: boolean,
+  disableAnimation: boolean,
+};
+
+export type Props = {
+  /**
+   * The contents of the `InputLabel`.
+   */
+  children?: Element<*>,
+  /**
+   * Useful to extend the style applied to components.
+   */
+  classes?: Object,
+  /**
+   * @ignore
+   */
+  className?: string,
+  /**
+   * If `true`, the transition animation is disabled.
+   */
+  disableAnimation?: boolean,
+  /**
+   * If `true`, apply disabled class.
+   */
+  disabled?: boolean,
+  /**
+   * If `true`, the label will be displayed in an error state.
+   */
+  error?: boolean,
+  /**
+   * If `true`, the input of this label is focused.
+   */
+  focused?: boolean,
+  /**
+   * if `true`, the label will indicate that the input is required.
+   */
+  required?: boolean,
+  /**
+   * If `true`, the label is shrunk.
+   */
+  shrink?: boolean,
+};
+
+type AllProps = DefaultProps & Props;
+
+function InputLabel(props: AllProps, context: { muiFormControl: Object }) {
   const {
     disabled,
     disableAnimation,
@@ -69,45 +116,6 @@ function InputLabel(props, context) {
   );
 }
 
-InputLabel.propTypes = {
-  /**
-   * The contents of the `InputLabel`.
-   */
-  children: PropTypes.node,
-  /**
-   * Useful to extend the style applied to components.
-   */
-  classes: PropTypes.object.isRequired,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * If `true`, the transition animation is disabled.
-   */
-  disableAnimation: PropTypes.bool,
-  /**
-   * If `true`, apply disabled class.
-   */
-  disabled: PropTypes.bool,
-  /**
-   * If `true`, the label will be displayed in an error state.
-   */
-  error: PropTypes.bool,
-  /**
-   * If `true`, the input of this label is focused.
-   */
-  focused: PropTypes.bool,
-  /**
-   * if `true`, the label will indicate that the input is required.
-   */
-  required: PropTypes.bool,
-  /**
-   * If `true`, the label is shrunk.
-   */
-  shrink: PropTypes.bool,
-};
-
 InputLabel.defaultProps = {
   disabled: false,
   disableAnimation: false,
@@ -117,4 +125,4 @@ InputLabel.contextTypes = {
   muiFormControl: PropTypes.object,
 };
 
-export default withStyles(styleSheet)(InputLabel);
+export default withStyles(styles, { name: 'MuiInputLabel' })(InputLabel);

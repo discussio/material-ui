@@ -3,11 +3,10 @@
 import React from 'react';
 import type { Element } from 'react';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import { emphasize } from '../styles/colorManipulator';
 
-export const styleSheet = createStyleSheet('MuiAvatar', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     position: 'relative',
     display: 'flex',
@@ -31,13 +30,14 @@ export const styleSheet = createStyleSheet('MuiAvatar', theme => ({
     width: '100%',
     height: 'auto',
   },
-}));
+});
 
 type DefaultProps = {
+  classes: Object,
   component: string,
 };
 
-type Props = DefaultProps & {
+export type Props = {
   /**
    * Used in combination with `src` or `srcSet` to
    * provide an alt attribute for the rendered `img` element.
@@ -60,7 +60,7 @@ type Props = DefaultProps & {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -89,7 +89,9 @@ type Props = DefaultProps & {
   srcSet?: string,
 };
 
-function Avatar(props: Props) {
+type AllProps = DefaultProps & Props;
+
+function Avatar(props: AllProps) {
   const {
     alt,
     classes,
@@ -144,4 +146,4 @@ Avatar.defaultProps = {
   component: 'div',
 };
 
-export default withStyles(styleSheet)(Avatar);
+export default withStyles(styles, { name: 'MuiAvatar' })(Avatar);

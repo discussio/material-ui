@@ -2,6 +2,102 @@
 
 Changes. Changes everywhere!
 
+## 1.0.0-beta.5
+###### _Aug 15, 2016_
+
+Big thanks to the 11 contributors who made this release possible.
+
+##### Breaking changes
+
+- [Tabs][BottomNavigation] Use value over index property (#7741) @oliviertassinari
+
+This is an effort in the prolongation of #2957 where `value`/`onChange` is the idiomatic interface to control a component.
+```diff
+-<Tabs index={0}>
++<Tabs value={0}>
+// ...
+```
+- [core] Remove createStyleSheet (#7740)(#7730) @oliviertassinari
+
+The primary motivation for this change is simplicity, it's also making our interface closer to
+`react-jss`.
+```diff
+-import { withStyles, createStyleSheet } from 'material-ui/styles';
++import { withStyles } from 'material-ui/styles';
+
+-const styleSheet = createStyleSheet('Button', {
++const styles = {
+  root: {
+    background: 'red',
+  },
+-});
++};
+
+// ...
+
+-export default withStyles(styleSheet)(AppContent);
++export default withStyles(styles, { name: 'Button' })(Button);
+```
+
+##### Component Fixes / Enhancements
+
+- [Modal] Fix with react@next (#7673) @oliviertassinari
+- [Card] allow overflow - important for content such as autosuggest (#7687) @rosskevin
+- [CardHeader] Allow classes in title and subheader (#7701) @bmuenzenmeyer
+- [Tabs] Fix full width issue (#7691) @oliviertassinari
+- [Button] Disable the hover effect on touch devices (#7692) @oliviertassinari
+- [Popover] Refactor popover transition - separation of concerns (#7720) @rosskevin
+- [ButtonBase] Expose internal component (#7727) @oliviertassinari
+- [LinearProgress] Use transform instead width (#7732) @kevindantas
+
+##### Docs
+
+- [docs] Update Minimizing Bundle Size Documentation (#7707) @umidbekkarimov
+- [docs] Fix broken menu on the autocomplete page (#7702) @oliviertassinari
+- [examples] Take ownership on the next.js example (#7703) @oliviertassinari
+- [docs] Create CODE_OF_CONDUCT.md (1f3e67326d76f5d2053b128d5ca2cdefa0d6d90f) @oliviertassinari
+- [docs] Update supported-components.md (#7722) @BLipscomb
+- [docs] Fix the installation instructions of the examples (#7733) @dawogfather
+- [docs] Fix Typo (#7736) @Merkyl999x
+
+##### Core
+
+- [core] Flow type transitions Slide, Fade, Collapse (#7719) @rosskevin
+- [core] General maintenance (#7690) @oliviertassinari
+
+## 1.0.0-beta.4
+###### _Aug 5, 2016_
+
+Big thanks to the 7 contributors who made this release possible.
+
+##### Component Fixes / Enhancements
+
+- [Grid] Add baseline to container's align property (#7623) @kgregory
+- [GridList] Migrate to v1 branch (#7626) @mbrookes
+- [ListItemText] Repurpose text class (#7645) @kgregory
+- [Drawer] Fix docker warning (#7598) @oliviertassinari
+- [Drawer] Fix Chrome regression (#7599) @oliviertassinari
+- [style] Fix HMR issue with react-hot-loader (#7601) @oliviertassinari
+- [ButtonBase] Explicit the need for a class component (#7656) @oliviertassinari
+- [Modal] Take into account the body margin (#7666) @oliviertassinari
+- Fixes in the subway (#7661) @oliviertassinari
+
+##### Docs
+
+- [docs] Fix language issues for clarity (#7610) @skirunman
+- [docs] Update docs for <RadioGroup> (#7640) @sebald
+- [docs] Fixed "initial" word in vars and typo (#7639) @kybarg
+- [docs] Spell check eslint script (#7643) @kybarg
+- [docs] Fix audit issues (#7595) @oliviertassinari
+- [docs] Show how to use the insertionPoint (#7611) @oliviertassinari
+
+##### Core
+
+- [flow] Export type Props for composability (#7609) @rosskevin
+- [typescript] Add TS typings (#7553) @sebald
+- [typescript] Improve the coverage (#7606) @sebald
+- [core] Add isMuiComponent helper (#7635) @katzoo
+
 ## 1.0.0-beta.3
 ###### _Jul 29, 2017_
 

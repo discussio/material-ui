@@ -4,7 +4,7 @@ The following is a list of Material Design components & features.
 Those currently supported by Material-UI are **highlighted ✓**.
 
 While we strive to follow the guidelines where practical (applying
-common sense where guidelines contadict - a more common occurence than
+common sense where guidelines contradict - a more common occurence than
 one might expect), we do not expect to support every component, or every
 feature of every component, but rather to provide the building blocks to
 allow developers to create compelling user interfaces and experiences.
@@ -53,7 +53,7 @@ to discuss the approach before submitting a PR.
   - **[Full bleed](https://www.google.com/design/spec/components/dividers.html#dividers-types-of-dividers) ✓**
   - **[Inset](https://www.google.com/design/spec/components/dividers.html#dividers-types-of-dividers) ✓**
 - **[Expansion Panels](https://www.google.com/design/spec/components/expansion-panels.html) ✓**
-- [Grid lists](https://www.google.com/design/spec/components/grid-lists.html)
+- **[Grid lists](https://www.google.com/design/spec/components/grid-lists.html) ✓**
 - **[Lists](https://www.google.com/design/spec/components/lists.html) ✓**
   - **[Single line](https://www.google.com/design/spec/components/lists.html#lists-specs) ✓**
   - **[Two line](https://www.google.com/design/spec/components/lists.html#lists-specs) ✓**

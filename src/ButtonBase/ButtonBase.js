@@ -1,19 +1,20 @@
 // @flow weak
+
 import React, { Component } from 'react';
 import type { Element } from 'react';
 import { findDOMNode } from 'react-dom';
+import warning from 'warning';
 import classNames from 'classnames';
 import keycode from 'keycode';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import { listenForFocusKeys, detectKeyboardFocus, focusKeyPressed } from '../utils/keyboardFocus';
 import TouchRipple from './TouchRipple';
 import createRippleHandler from './createRippleHandler';
 
-export const styleSheet = createStyleSheet('MuiButtonBase', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     position: 'relative',
-    // Remove Gray Highlight
+    // Remove grey highlight
     WebkitTapHighlightColor: theme.palette.common.transparent,
     outline: 'none',
     border: 0,
@@ -25,19 +26,25 @@ export const styleSheet = createStyleSheet('MuiButtonBase', theme => ({
     color: 'inherit',
   },
   disabled: {
+    pointerEvents: 'none', // Disable link interactions
     cursor: 'default',
   },
-}));
+});
 
 type DefaultProps = {
   centerRipple: boolean,
+  classes: Object,
   focusRipple: boolean,
   disableRipple: boolean,
   tabIndex: string,
   type: string,
 };
 
-type Props = DefaultProps & {
+export type Props = {
+  /**
+   * If `true`, the ripples will be centered.
+   * They won't start at the cursor interaction position.
+   */
   centerRipple?: boolean,
   /**
    * The content of the component.
@@ -46,7 +53,7 @@ type Props = DefaultProps & {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -70,33 +77,82 @@ type Props = DefaultProps & {
    * `disableRipple` must also be `false`.
    */
   focusRipple?: boolean,
+  /**
+   * The CSS class applied while the component is keyboard focused.
+   */
   keyboardFocusedClassName?: string,
+  /**
+   * @ignore
+   */
   onBlur?: Function,
+  /**
+   * @ignore
+   */
   onClick?: Function,
+  /**
+   * @ignore
+   */
   onFocus?: Function,
+  /**
+   * Callback fired when the component is focused with a keyboard.
+   * We trigger a `onFocus` callback too.
+   *
+   * @param {object} event The event source of the callback
+   */
   onKeyboardFocus?: Function,
+  /**
+   * @ignore
+   */
   onKeyDown?: Function,
+  /**
+   * @ignore
+   */
   onKeyUp?: Function,
+  /**
+   * @ignore
+   */
   onMouseDown?: Function,
+  /**
+   * @ignore
+   */
   onMouseLeave?: Function,
+  /**
+   * @ignore
+   */
   onMouseUp?: Function,
+  /**
+   * @ignore
+   */
   onTouchEnd?: Function,
+  /**
+   * @ignore
+   */
   onTouchStart?: Function,
+  /**
+   * @ignore
+   */
   role?: string,
+  /**
+   * @ignore
+   */
   tabIndex?: string,
+  /**
+   * @ignore
+   */
   type: string,
 };
+
+type AllProps = DefaultProps & Props;
 
 type State = {
   keyboardFocused: boolean,
 };
 
-/**
- * @ignore - internal component.
- */
-class ButtonBase extends Component<DefaultProps, Props, State> {
+class ButtonBase extends Component<DefaultProps, AllProps, State> {
+  props: AllProps;
   static defaultProps: DefaultProps = {
     centerRipple: false,
+    classes: {},
     focusRipple: false,
     disableRipple: false,
     tabIndex: '0',
@@ -109,6 +165,12 @@ class ButtonBase extends Component<DefaultProps, Props, State> {
 
   componentDidMount() {
     listenForFocusKeys();
+
+    warning(
+      this.button,
+      `Material-UI: please provide a class to the component property.
+      The keyboard focus logic needs a reference to work correctly.`,
+    );
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -208,10 +270,12 @@ class ButtonBase extends Component<DefaultProps, Props, State> {
       return;
     }
 
-    event.persist();
+    if (this.button) {
+      event.persist();
 
-    const keyboardFocusCallback = this.onKeyboardFocusHandler.bind(this, event);
-    detectKeyboardFocus(this, findDOMNode(this.button), keyboardFocusCallback);
+      const keyboardFocusCallback = this.onKeyboardFocusHandler.bind(this, event);
+      detectKeyboardFocus(this, findDOMNode(this.button), keyboardFocusCallback);
+    }
 
     if (this.props.onFocus) {
       this.props.onFocus(event);
@@ -325,4 +389,4 @@ class ButtonBase extends Component<DefaultProps, Props, State> {
   }
 }
 
-export default withStyles(styleSheet)(ButtonBase);
+export default withStyles(styles, { name: 'MuiButtonBase' })(ButtonBase);

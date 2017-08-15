@@ -2,16 +2,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import Card, { CardContent } from 'material-ui/Card';
+import { withStyles } from 'material-ui/styles';
+import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import SkipPreviousIcon from 'material-ui-icons/SkipPrevious';
 import PlayArrowIcon from 'material-ui-icons/PlayArrow';
 import SkipNextIcon from 'material-ui-icons/SkipNext';
-import albumCover from 'docs/src/assets/images/live-from-space.jpg';
+import albumCover from 'docs/src/assets/images/cards/live-from-space.jpg';
 
-const styleSheet = createStyleSheet({
+const styles = {
   card: {
     display: 'flex',
   },
@@ -36,9 +36,9 @@ const styleSheet = createStyleSheet({
     height: 38,
     width: 38,
   },
-});
+};
 
-function NowPlayingCard(props) {
+function MediaControlCard(props) {
   const classes = props.classes;
 
   return (
@@ -63,16 +63,18 @@ function NowPlayingCard(props) {
             </IconButton>
           </div>
         </div>
-        <div className={classes.cover}>
-          <img src={albumCover} alt="Live from space album cover" />
-        </div>
+        <CardMedia
+          className={classes.cover}
+          image={albumCover}
+          title="Live from space album cover"
+        />
       </Card>
     </div>
   );
 }
 
-NowPlayingCard.propTypes = {
+MediaControlCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(NowPlayingCard);
+export default withStyles(styles)(MediaControlCard);

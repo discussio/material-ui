@@ -4,7 +4,6 @@ import React, { Component, createElement, cloneElement } from 'react';
 import type { Element } from 'react';
 import classNames from 'classnames';
 import EventListener from 'react-event-listener';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import { duration } from '../styles/transitions';
 import ClickAwayListener from '../internal/ClickAwayListener';
@@ -13,7 +12,7 @@ import Slide from '../transitions/Slide';
 import SnackbarContent from './SnackbarContent';
 import type { TransitionCallback } from '../internal/Transition';
 
-export const styleSheet = createStyleSheet('MuiSnackbar', theme => {
+export const styles = (theme: Object) => {
   const gutter = theme.spacing.unit * 3;
   const top = { top: 0 };
   const bottom = { bottom: 0 };
@@ -66,7 +65,7 @@ export const styleSheet = createStyleSheet('MuiSnackbar', theme => {
       },
     },
   };
-});
+};
 
 type Origin = {
   horizontal?: 'left' | 'center' | 'right' | number,
@@ -76,11 +75,12 @@ type Origin = {
 type DefaultProps = {
   anchorOrigin: Origin,
   autoHideDuration: ?number,
+  classes: Object,
   enterTransitionDuration: number,
   leaveTransitionDuration: number,
 };
 
-type Props = DefaultProps & {
+export type Props = {
   /**
    * The action to display.
    */
@@ -102,7 +102,7 @@ type Props = DefaultProps & {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -112,7 +112,7 @@ type Props = DefaultProps & {
    */
   enterTransitionDuration?: number,
   /**
-   * When displaying multiple consecutive Snackbars from a parent renedering a single
+   * When displaying multiple consecutive Snackbars from a parent rendering a single
    * <Snackbar/>, add the key property to ensure independent treatment of each message.
    * e.g. <Snackbar key={message} />, otherwise, the message may update-in-place and
    * features such as autoHideDuration may be canceled.
@@ -185,15 +185,18 @@ type Props = DefaultProps & {
   transition?: Function | Element<*>,
 };
 
+type AllProps = DefaultProps & Props;
+
 type State = {
   exited: boolean,
 };
 
-class Snackbar extends Component<DefaultProps, Props, State> {
-  props: Props;
+class Snackbar extends Component<DefaultProps, AllProps, State> {
+  props: AllProps;
   static defaultProps: DefaultProps = {
     anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
     autoHideDuration: null,
+    classes: {},
     enterTransitionDuration: duration.enteringScreen,
     leaveTransitionDuration: duration.leavingScreen,
   };
@@ -361,4 +364,4 @@ class Snackbar extends Component<DefaultProps, Props, State> {
   }
 }
 
-export default withStyles(styleSheet)(Snackbar);
+export default withStyles(styles, { name: 'MuiSnackbar' })(Snackbar);

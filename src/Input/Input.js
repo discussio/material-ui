@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import Textarea from './Textarea';
 
@@ -15,7 +14,7 @@ export function isDirty(obj, SSR = false) {
   );
 }
 
-export const styleSheet = createStyleSheet('MuiInput', theme => {
+export const styles = (theme: Object) => {
   const placeholder = {
     color: 'currentColor',
     opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
@@ -158,16 +157,17 @@ export const styleSheet = createStyleSheet('MuiInput', theme => {
       width: '100%',
     },
   };
-});
+};
 
 type DefaultProps = {
+  classes: Object,
   disableUnderline: boolean,
   fullWidth: boolean,
   multiline: boolean,
   type: string,
 };
 
-type Props = DefaultProps & {
+export type Props = {
   /**
    * This property helps users to fill forms faster, especially on mobile devices.
    * The name can be confusion, it's more like an autofill.
@@ -182,7 +182,7 @@ type Props = DefaultProps & {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * The CSS class name of the wrapper element.
    */
@@ -276,7 +276,7 @@ type Props = DefaultProps & {
    */
   rows?: string | number,
   /**
-   * Maxium number of rows to display when multiline option is set to true.
+   * Maximum number of rows to display when multiline option is set to true.
    */
   rowsMax?: string | number,
   /**
@@ -289,11 +289,14 @@ type Props = DefaultProps & {
   value?: string | number,
 };
 
+type AllProps = DefaultProps & Props;
+
 type State = {
   focused: boolean,
 };
 
-class Input extends Component<DefaultProps, Props, State> {
+class Input extends Component<DefaultProps, AllProps, State> {
+  props: AllProps;
   static muiName = 'Input';
   static defaultProps = {
     disableUnderline: false,
@@ -524,4 +527,4 @@ class Input extends Component<DefaultProps, Props, State> {
   }
 }
 
-export default withStyles(styleSheet)(Input);
+export default withStyles(styles, { name: 'MuiInput' })(Input);

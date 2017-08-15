@@ -1,14 +1,15 @@
-// @flow
+// @flow weak
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import withWidth from 'material-ui/utils/withWidth';
 import Typography from 'material-ui/Typography';
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = theme => ({
   root: {
     flexGrow: 1,
     paddingTop: 42,
@@ -26,7 +27,7 @@ const styleSheet = createStyleSheet(theme => ({
     top: 0,
     padding: 5,
   },
-}));
+});
 
 function GridIntegration(props) {
   const classes = props.classes;
@@ -36,7 +37,7 @@ function GridIntegration(props) {
       <Typography type="subheading" className={classes.typography}>
         Current width: {props.width}
       </Typography>
-      <Grid container gutter={24}>
+      <Grid container spacing={24}>
         <Grid item xs hidden={{ xsUp: true }}>
           <Paper className={classes.paper}>xsUp</Paper>
         </Grid>
@@ -62,4 +63,4 @@ GridIntegration.propTypes = {
   width: PropTypes.string,
 };
 
-export default compose(withStyles(styleSheet), withWidth())(GridIntegration);
+export default compose(withStyles(styles), withWidth())(GridIntegration);

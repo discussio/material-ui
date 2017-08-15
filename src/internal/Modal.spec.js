@@ -9,7 +9,7 @@ import { createShallow, createMount, getClasses } from '../test-utils';
 import consoleErrorMock from '../../test/utils/consoleErrorMock';
 import Fade from '../transitions/Fade';
 import Backdrop from './Backdrop';
-import Modal, { styleSheet } from './Modal';
+import Modal from './Modal';
 
 describe('<Modal />', () => {
   let shallow;
@@ -18,7 +18,7 @@ describe('<Modal />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = getClasses(styleSheet);
+    classes = getClasses(<Modal />);
     mount = createMount();
   });
 
@@ -40,7 +40,7 @@ describe('<Modal />', () => {
 
     before(() => {
       wrapper = shallow(
-        <Modal show data-my-prop="woof">
+        <Modal show data-my-prop="woofModal">
           <p>Hello World</p>
         </Modal>,
       );
@@ -363,7 +363,7 @@ describe('<Modal />', () => {
         topModalStub.reset();
       });
 
-      it('when not mounted should not call onEscaeKeyUp and onRequestClose', () => {
+      it('when not mounted should not call onEscapeKeyUp and onRequestClose', () => {
         instance = wrapper.instance();
         instance.mounted = false;
         instance.handleDocumentKeyUp(undefined);
@@ -371,7 +371,7 @@ describe('<Modal />', () => {
         assert.strictEqual(onRequestCloseStub.callCount, 0);
       });
 
-      it('when mounted and not TopModal should not call onEscaeKeyUp and onRequestClose', () => {
+      it('when mounted and not TopModal should not call onEscapeKeyUp and onRequestClose', () => {
         topModalStub.returns('false');
         wrapper.setProps({ modalManager: { isTopModal: topModalStub } });
         instance = wrapper.instance();
@@ -396,7 +396,7 @@ describe('<Modal />', () => {
         assert.strictEqual(onRequestCloseStub.callCount, 0);
       });
 
-      it('should call onEscaeKeyUp and onRequestClose', () => {
+      it('should call onEscapeKeyUp and onRequestClose', () => {
         topModalStub.returns(true);
         wrapper.setProps({ modalManager: { isTopModal: topModalStub } });
         event = { keyCode: keycode('esc') };

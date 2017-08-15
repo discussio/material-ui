@@ -1,14 +1,14 @@
-// @flow
+// @flow weak
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import { FormLabel, FormControlLabel } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import Paper from 'material-ui/Paper';
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = theme => ({
   root: {
     flexGrow: 1,
   },
@@ -22,7 +22,7 @@ const styleSheet = createStyleSheet(theme => ({
   control: {
     padding: theme.spacing.unit * 2,
   },
-}));
+});
 
 class InteractiveGrid extends Component {
   state = {
@@ -41,7 +41,6 @@ class InteractiveGrid extends Component {
   render() {
     const classes = this.props.classes;
     const { align, direction, justify } = this.state;
-
     return (
       <Grid container className={classes.root}>
         <Grid item xs={12}>
@@ -54,7 +53,10 @@ class InteractiveGrid extends Component {
           >
             {[0, 1, 2].map(value =>
               <Grid key={value} item>
-                <Paper className={classes.paper}>
+                <Paper
+                  className={classes.paper}
+                  style={{ paddingTop: (value + 1) * 10, paddingBottom: (value + 1) * 10 }}
+                >
                   {`Cell ${value + 1}`}
                 </Paper>
               </Grid>,
@@ -113,6 +115,7 @@ class InteractiveGrid extends Component {
                   <FormControlLabel value="center" control={<Radio />} label="center" />
                   <FormControlLabel value="flex-end" control={<Radio />} label="flex-end" />
                   <FormControlLabel value="stretch" control={<Radio />} label="stretch" />
+                  <FormControlLabel value="baseline" control={<Radio />} label="baseline" />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -127,4 +130,4 @@ InteractiveGrid.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(InteractiveGrid);
+export default withStyles(styles)(InteractiveGrid);

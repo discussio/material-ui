@@ -5,7 +5,7 @@ import { assert } from 'chai';
 import forOwn from 'lodash/forOwn';
 import { createShallow, getClasses } from '../test-utils';
 import Hidden from '../Hidden';
-import Grid, { styleSheet } from './Grid';
+import Grid from './Grid';
 
 describe('<Grid />', () => {
   let shallow;
@@ -19,13 +19,13 @@ describe('<Grid />', () => {
         context: shallowInner.context,
       });
     };
-    classes = getClasses(styleSheet);
+    classes = getClasses(<Grid />);
   });
 
   it('should render', () => {
-    const wrapper = shallow(<Grid className="woof" />);
+    const wrapper = shallow(<Grid className="woofGrid" />);
     assert.strictEqual(wrapper.name(), 'div');
-    assert.strictEqual(wrapper.hasClass('woof'), true, 'should have the user class');
+    assert.strictEqual(wrapper.hasClass('woofGrid'), true, 'should have the user class');
   });
 
   describe('prop: container', () => {
@@ -61,10 +61,10 @@ describe('<Grid />', () => {
     });
   });
 
-  describe('prop: gutter', () => {
-    it('should have a default gutter', () => {
+  describe('prop: spacing', () => {
+    it('should have a default spacing', () => {
       const wrapper = shallow(<Grid container />);
-      assert.strictEqual(wrapper.hasClass(classes['gutter-xs-16']), true);
+      assert.strictEqual(wrapper.hasClass(classes['spacing-xs-16']), true);
     });
   });
 

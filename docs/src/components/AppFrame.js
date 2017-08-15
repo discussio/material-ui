@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -28,7 +28,7 @@ function getTitle(routes) {
   return null;
 }
 
-const styleSheet = createStyleSheet('AppFrame', theme => ({
+const styles = theme => ({
   '@global': {
     html: {
       boxSizing: 'border-box',
@@ -44,11 +44,6 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
       overflowX: 'hidden',
       WebkitFontSmoothing: 'antialiased', // Antialiasing.
       MozOsxFontSmoothing: 'grayscale', // Antialiasing.
-    },
-    img: {
-      maxWidth: '100%',
-      height: 'auto',
-      width: 'auto',
     },
   },
   root: {
@@ -82,7 +77,7 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
       display: 'none',
     },
   },
-}));
+});
 
 class AppFrame extends Component {
   state = {
@@ -108,7 +103,7 @@ class AppFrame extends Component {
     const title = getTitle(routes);
 
     let drawerDocked = isWidthUp('lg', width);
-    let navIconClassName = classes.icon;
+    let navIconClassName = '';
     let appBarClassName = classes.appBar;
 
     if (title === null) {
@@ -126,6 +121,7 @@ class AppFrame extends Component {
           <Toolbar>
             <IconButton
               color="contrast"
+              aria-label="open drawer"
               onClick={this.handleDrawerToggle}
               className={navIconClassName}
             >
@@ -142,6 +138,7 @@ class AppFrame extends Component {
             <IconButton
               title="Toggle light/dark theme"
               color="contrast"
+              aria-label="change theme"
               onClick={this.handleToggleShade}
             >
               <LightbulbOutline />
@@ -177,4 +174,10 @@ AppFrame.propTypes = {
   width: PropTypes.string.isRequired,
 };
 
-export default compose(withStyles(styleSheet), withWidth(), connect())(AppFrame);
+export default compose(
+  withStyles(styles, {
+    name: 'AppFrame',
+  }),
+  withWidth(),
+  connect(),
+)(AppFrame);

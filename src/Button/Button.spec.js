@@ -3,17 +3,17 @@
 import React from 'react';
 import { assert } from 'chai';
 import { createShallow, createRender, getClasses } from '../test-utils';
-import Button, { styleSheet } from './Button';
+import Button from './Button';
 
 describe('<Button />', () => {
   let shallow;
-  let renderToString;
+  let render;
   let classes;
 
   before(() => {
     shallow = createShallow({ dive: true });
-    renderToString = createRender();
-    classes = getClasses(styleSheet);
+    render = createRender();
+    classes = getClasses(<Button>Hello World</Button>);
   });
 
   it('should render a <ButtonBase> element', () => {
@@ -222,17 +222,13 @@ describe('<Button />', () => {
   });
 
   describe('server side', () => {
-    after(() => {
-      renderToString.cleanUp();
-    });
+    // Only run the test on node.
+    if (!/jsdom/.test(window.navigator.userAgent)) {
+      return;
+    }
 
     it('should server side render', () => {
-      // Only run the test on node.
-      if (!/jsdom/.test(window.navigator.userAgent)) {
-        return;
-      }
-
-      const markup = renderToString(<Button>Hello World</Button>);
+      const markup = render(<Button>Hello World</Button>);
       assert.strictEqual(markup.text(), 'Hello World');
     });
   });
