@@ -5,12 +5,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import { Paper, Typography, IconButton } from '../';
-import ButtonBase from '../internal/ButtonBase';
+import ButtonBase from '../ButtonBase';
 import Collapse from '../transitions/Collapse';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => {
+export const styles = (theme: Object) => {
   const transition = {
     duration: theme.transitions.duration.shortest,
     easing: theme.transitions.easing.ease,
@@ -111,7 +110,7 @@ export const styleSheet = createStyleSheet('MuiExpansionPanel', theme => {
       color: theme.palette.action.disabled,
     },
   };
-});
+};
 
 class ExpansionPanel extends Component {
   static defaultProps = {
@@ -318,4 +317,4 @@ ExpansionPanel.propTypes = {
   unmountOnExit: PropTypes.bool,
 };
 
-export default withStyles(styleSheet)(ExpansionPanel);
+export default withStyles(styles, { name: 'MuiExpansionPanel' })(ExpansionPanel);
