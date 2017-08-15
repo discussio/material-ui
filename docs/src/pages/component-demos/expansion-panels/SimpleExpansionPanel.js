@@ -2,12 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import ExpansionPanel from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = theme => ({
   root: {
     marginTop: 30,
     width: '100%',
@@ -15,7 +15,7 @@ const styleSheet = createStyleSheet(theme => ({
   content: {
     padding: theme.spacing.unit * 3,
   },
-}));
+});
 
 function SimpleExpansionPanel(props) {
   const classes = props.classes;

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import ExpansionPanel from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import { CardActions } from 'material-ui/Card';
@@ -10,7 +10,7 @@ import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = theme => ({
   root: {
     marginTop: 30,
     width: '100%',
@@ -23,7 +23,7 @@ const styleSheet = createStyleSheet(theme => ({
     padding: [0, theme.spacing.unit],
     justifyContent: 'flex-end',
   },
-}));
+});
 
 class ControlledExpansionPanels extends Component {
   state = {
