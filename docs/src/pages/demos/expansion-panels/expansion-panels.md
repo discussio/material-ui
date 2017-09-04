@@ -8,10 +8,10 @@ The [Expansion panel](https://material.io/guidelines/components/expansion-panels
 
 ## Simple Expansion Panel
 
-{{demo='pages/component-demos/expansion-panels/SimpleExpansionPanel.js'}}
+{{demo='pages/demos/expansion-panels/SimpleExpansionPanel.js'}}
 
 ## Accordion - controlled Expansion Panel
 
 Extend the default panel behavior to create an accordion with the `ExpansionPanel` component.
 
-{{demo='pages/component-demos/expansion-panels/ControlledExpansionPanels.js'}}
+{{demo='pages/demos/expansion-panels/ControlledExpansionPanels.js'}}

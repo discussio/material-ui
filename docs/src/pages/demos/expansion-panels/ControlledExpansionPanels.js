@@ -10,7 +10,7 @@ import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = theme => ({
+const styles = theme => ({
   root: {
     marginTop: 30,
     width: '100%',
@@ -95,4 +95,4 @@ ControlledExpansionPanels.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(ControlledExpansionPanels);
+export default withStyles(styles)(ControlledExpansionPanels);

@@ -7,7 +7,7 @@ import ExpansionPanel from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-const styleSheet = theme => ({
+const styles = theme => ({
   root: {
     marginTop: 30,
     width: '100%',
@@ -49,4 +49,4 @@ SimpleExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(SimpleExpansionPanel);
+export default withStyles(styles)(SimpleExpansionPanel);

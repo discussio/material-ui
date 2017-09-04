@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import keycode from 'keycode';
 import { Paper, Typography, IconButton } from '../';
 import ButtonBase from '../ButtonBase';
 import Collapse from '../transitions/Collapse';
@@ -143,13 +142,6 @@ class ExpansionPanel extends Component {
 
   isControlled = null;
 
-  handleHeaderKeyUp = event => {
-    const code = keycode(event);
-    if (code === 'enter' || code === 'space') {
-      this.handleChange();
-    }
-  };
-
   handleFocus = () => {
     this.setState({
       focused: true,
@@ -201,18 +193,20 @@ class ExpansionPanel extends Component {
         onBlur={this.handleBlur}
         onClick={this.handleChange}
       >
-        {disableHeaderTypography
-          ? headerTitle
-          : <Typography
-              type="subheading"
-              className={classNames(classes.headerTitle, {
-                [classes.headerDisabled]: disabled,
-              })}
-              {...headerTitleProps}
-            >
-              {headerTitle}
-            </Typography>}
-        {expandIcon &&
+        {disableHeaderTypography ? (
+          headerTitle
+        ) : (
+          <Typography
+            type="subheading"
+            className={classNames(classes.headerTitle, {
+              [classes.headerDisabled]: disabled,
+            })}
+            {...headerTitleProps}
+          >
+            {headerTitle}
+          </Typography>
+        )}
+        {expandIcon && (
           <IconButton
             disabled={disabled}
             className={classNames(classes.expandButton, {
@@ -223,7 +217,8 @@ class ExpansionPanel extends Component {
             onClick={this.handleChange}
           >
             {expandIcon}
-          </IconButton>}
+          </IconButton>
+        )}
       </ButtonBase>
     );
   }
