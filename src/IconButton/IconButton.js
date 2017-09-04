@@ -1,6 +1,7 @@
 // @flow weak
+// @inheritedComponent ButtonBase
 
-import React, { Children, cloneElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
@@ -31,7 +32,7 @@ export const styles = (theme: Object) => ({
     color: theme.palette.action.disabled,
   },
   colorAccent: {
-    color: theme.palette.accent.A200,
+    color: theme.palette.secondary.A200,
   },
   colorContrast: {
     color: theme.palette.getContrastText(theme.palette.primary[500]),
@@ -81,19 +82,19 @@ function IconButton(props) {
       {...other}
     >
       <span className={classes.label}>
-        {typeof children === 'string'
-          ? <Icon className={classes.icon}>
-              {children}
-            </Icon>
-          : Children.map(children, child => {
-              if (isMuiComponent(child, 'Icon')) {
-                return cloneElement(child, {
-                  className: classNames(classes.icon, child.props.className),
-                });
-              }
+        {typeof children === 'string' ? (
+          <Icon className={classes.icon}>{children}</Icon>
+        ) : (
+          React.Children.map(children, child => {
+            if (isMuiComponent(child, 'Icon')) {
+              return React.cloneElement(child, {
+                className: classNames(classes.icon, child.props.className),
+              });
+            }
 
-              return child;
-            })}
+            return child;
+          })
+        )}
       </span>
     </ButtonBase>
   );

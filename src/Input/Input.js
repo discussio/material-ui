@@ -1,16 +1,39 @@
 // @flow weak
 
-import React, { Component } from 'react';
+import React from 'react';
+import type { ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 import Textarea from './Textarea';
 
+/**
+ * Supports determination of isControlled().
+ * Controlled input accepts its current value as a prop.
+ *
+ * @see https://facebook.github.io/react/docs/forms.html#controlled-components
+ * @param value
+ * @returns {boolean} true if string (including '') or number (including zero)
+ */
+export function hasValue(value: ?(number | string)) {
+  return value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0);
+}
+
+/**
+ * Determine if field is dirty (a.k.a. filled).
+ *
+ * Response determines if label is presented above field or as placeholder.
+ *
+ * @param obj
+ * @param SSR
+ * @returns {boolean} False when not present or empty string.
+ *                    True when any number or string with length.
+ */
 export function isDirty(obj, SSR = false) {
   return (
     obj &&
-    ((obj.value && obj.value.toString().length) ||
-      (SSR && obj.defaultValue && obj.defaultValue.toString().length)) > 0
+    ((hasValue(obj.value) && obj.value !== '') ||
+      (SSR && hasValue(obj.defaultValue) && obj.defaultValue !== ''))
   );
 }
 
@@ -88,11 +111,16 @@ export const styles = (theme: Object) => {
       '&:focus': {
         outline: 0,
       },
+      // Reset Firefox invalid required input style
+      '&:invalid': {
+        boxShadow: 'none',
+      },
       '&::-webkit-search-decoration': {
         // Remove the padding when type=search.
         appearance: 'none',
       },
-      'label + $formControl > &': {
+      // Show and hide the placeholder logic
+      'label + $formControl &': {
         '&::-webkit-input-placeholder': placeholderForm,
         '&::-moz-placeholder': placeholderForm, // Firefox 19+
         '&:-ms-input-placeholder': placeholderForm, // IE 11
@@ -140,7 +168,7 @@ export const styles = (theme: Object) => {
       },
     },
     multiline: {
-      padding: `${theme.spacing.unit - 2}px 0 ${theme.spacing.unit + 1}px`,
+      padding: `${theme.spacing.unit - 2}px 0 ${theme.spacing.unit - 1}px`,
     },
     inputDisabled: {
       opacity: 1, // Reset iOS opacity
@@ -192,7 +220,7 @@ export type Props = {
    * Either a string to use a DOM element or a component.
    * It's an `input` by default.
    */
-  component?: string | Function,
+  component?: string | ComponentType<*>,
   /**
    * The default input value, useful when not controlling the component.
    */
@@ -295,7 +323,7 @@ type State = {
   focused: boolean,
 };
 
-class Input extends Component<DefaultProps, AllProps, State> {
+class Input extends React.Component<AllProps, State> {
   props: AllProps;
   static muiName = 'Input';
   static defaultProps = {
@@ -369,8 +397,14 @@ class Input extends Component<DefaultProps, AllProps, State> {
     }
   };
 
+  /**
+   * A controlled input accepts its current value as a prop.
+   *
+   * @see https://facebook.github.io/react/docs/forms.html#controlled-components
+   * @returns {boolean} true if string (including '') or number (including zero)
+   */
   isControlled() {
-    return typeof this.props.value === 'string';
+    return hasValue(this.props.value);
   }
 
   checkDirty(obj) {
@@ -478,16 +512,9 @@ class Input extends Component<DefaultProps, AllProps, State> {
     };
 
     if (component) {
-      inputProps = {
-        rowsMax,
-        ...inputProps,
-      };
       InputComponent = component;
     } else if (multiline) {
       if (rows && !rowsMax) {
-        inputProps = {
-          ...inputProps,
-        };
         InputComponent = 'textarea';
       } else {
         inputProps = {
@@ -512,7 +539,7 @@ class Input extends Component<DefaultProps, AllProps, State> {
           onKeyUp={onKeyUp}
           onKeyDown={onKeyDown}
           disabled={disabled}
-          aria-required={required ? true : undefined}
+          required={required ? true : undefined}
           value={value}
           id={id}
           name={name}

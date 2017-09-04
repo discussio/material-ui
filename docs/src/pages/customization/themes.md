@@ -28,7 +28,7 @@ A color intention is a mapping of a palette to a given intention within your app
 We expose the following color intentions:
 
 - primary - used to represent primary interface elements for a user.
-- accent - used to represent secondary interface elements for a user.
+- secondary - used to represent secondary interface elements for a user.
 - error - used to represent interface elements that the user should be careful of.
 
 The palette is using the hues prefixed with `A` (`A200`, etc.) for the accent color and the hues unprefixed for the other intentions.
@@ -58,7 +58,7 @@ You can make a theme dark by setting `type` to `dark`.
 ### The other variables
 
 We have tried to normalize the implementation by adding many more variables: typography, breakpoints, transitions, etc. You can see below what the theme object looks like with the default values.
-If you want to learn more, we suggesting having a look at [`material-ui/style/theme.js`](https://github.com/callemall/material-ui/blob/v1-beta/src/styles/theme.js).
+If you want to learn more, we suggesting having a look at [`material-ui/style/createMuiTheme.js`](https://github.com/callemall/material-ui/blob/v1-beta/src/styles/createMuiTheme.js).
 
 {{demo='pages/customization/ThemeDefault.js'}}
 
@@ -110,8 +110,7 @@ This component should preferably be used at **the root of your component tree**.
 ```jsx
 import React from 'react';
 import { render } from 'react-dom';
-import createMuiTheme from 'material-ui/styles/theme';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Root from './Root';
 
 const theme = createMuiTheme();

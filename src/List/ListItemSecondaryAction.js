@@ -1,7 +1,7 @@
 // @flow weak
 
 import React from 'react';
-import type { Element } from 'react';
+import type { Node } from 'react';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 
@@ -22,7 +22,7 @@ export type Props = {
   /**
    * The content of the component, normally an `IconButton` or selection control.
    */
-  children?: Element<*>,
+  children?: Node,
   /**
    * Useful to extend the style applied to components.
    */
@@ -38,11 +38,7 @@ type AllProps = DefaultProps & Props;
 function ListItemSecondaryAction(props: AllProps) {
   const { children, classes, className } = props;
 
-  return (
-    <div className={classNames(classes.root, className)}>
-      {children}
-    </div>
-  );
+  return <div className={classNames(classes.root, className)}>{children}</div>;
 }
 
 ListItemSecondaryAction.muiName = 'ListItemSecondaryAction';

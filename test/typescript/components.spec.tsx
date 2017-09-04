@@ -38,17 +38,18 @@ import {
   TextField,
   Toolbar,
   Typography,
-} from 'material-ui';
-import Collapse from 'material-ui/transitions/Collapse';
-import { GridList } from 'material-ui/GridList';
-import MobileStepper from 'material-ui/MobileStepper/MobileStepper';
+  Grid,
+} from '../../src';
+import Collapse from '../../src/transitions/Collapse';
+import { GridList } from '../../src/GridList';
+import MobileStepper from '../../src/MobileStepper/MobileStepper';
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from 'material-ui/Table';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+} from '../../src/Table';
+import { withStyles, StyleRulesCallback } from '../../src/styles';
 
 const log = console.log;
 const FakeIcon = () => <div>ICON</div>;
@@ -307,6 +308,26 @@ const DrawerTest = () => {
     </div>
   );
 };
+
+const DockedDrawerTest = () =>
+  class DockedDrawer extends React.Component<{}, { docked: boolean }> {
+    state = { docked: true };
+    render() {
+      const docked: true | false = this.state.docked;
+      return (
+        <Drawer anchor="bottom" open={true} docked={docked}>
+          List
+        </Drawer>
+      );
+    }
+  };
+
+const GridTest = () =>
+  <Grid container>
+    <Grid item xs={12}>...</Grid>
+    <Grid item sm={12}>...</Grid>
+    <Grid item xl={true}>...</Grid>
+  </Grid>
 
 const GridListTest = () =>
   <GridList cellHeight={160} cols={3}>
@@ -595,13 +616,13 @@ const StepperTest = () =>
   };
 
 const TableTest = () => {
-  const styleSheet = createStyleSheet(theme => ({
+  const styles: StyleRulesCallback = theme => ({
     paper: {
       width: '100%',
       marginTop: theme.spacing.unit * 3,
       overflowX: 'auto',
     },
-  }));
+  });
 
   let id = 0;
   function createData(name, calories, fat, carbs, protein) {
@@ -660,7 +681,7 @@ const TableTest = () => {
     );
   }
 
-  return withStyles(styleSheet)(BasicTable);
+  return withStyles(styles)(BasicTable);
 };
 
 const TabsTest = () => {
@@ -669,21 +690,21 @@ const TabsTest = () => {
       {props.children}
     </div>;
 
-  const styleSheet = createStyleSheet(theme => ({
+  const styles = theme => ({
     root: {
       flexGrow: 1,
       marginTop: theme.spacing.unit * 3,
       backgroundColor: theme.palette.background.paper,
     },
-  }));
+  });
 
   class BasicTabs extends React.Component<{ classes: { root: string } }> {
     state = {
-      index: 0,
+      value: 0,
     };
 
-    handleChange = (event, index) => {
-      this.setState({ index });
+    handleChange = (event, value) => {
+      this.setState({ value });
     };
 
     render() {
@@ -692,21 +713,21 @@ const TabsTest = () => {
       return (
         <div className={classes.root}>
           <AppBar position="static">
-            <Tabs index={this.state.index} onChange={this.handleChange}>
+            <Tabs value={this.state.value} onChange={this.handleChange}>
               <Tab label="Item One" />
               <Tab label="Item Two" />
               <Tab label="Item Three" />
             </Tabs>
           </AppBar>
-          {this.state.index === 0 &&
+          {this.state.value === 0 &&
             <TabContainer>
               {'Item One'}
             </TabContainer>}
-          {this.state.index === 1 &&
+          {this.state.value === 1 &&
             <TabContainer>
               {'Item Two'}
             </TabContainer>}
-          {this.state.index === 2 &&
+          {this.state.value === 2 &&
             <TabContainer>
               {'Item Three'}
             </TabContainer>}
@@ -715,7 +736,7 @@ const TabsTest = () => {
     }
   }
 
-  return withStyles(styleSheet)(BasicTabs);
+  return withStyles(styles)(BasicTabs);
 };
 
 const TextFieldTest = () =>

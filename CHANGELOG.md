@@ -2,8 +2,197 @@
 
 Changes. Changes everywhere!
 
+## 1.0.0-beta.8
+###### _Sep 2, 2017_
+
+Big thanks to the 8 contributors who made this release possible.
+
+##### Breaking changes
+
+N.A
+
+##### Component Fixes / Enhancements
+
+- [typescript] Adjust typings to refactoring in `styles` (#7975) @sebald
+- [Drawer] Add `type` property, remove `docked` property in TypeScript definition (#7998) @jaredklewis
+- [typescript] Make createMuiTheme's ThemeOptions recursively partial (#7993) @fathyb
+- [npm] Move "next" to the dev dependencies (#7980) @oliviertassinari
+
+##### Docs
+
+- [docs] Add a NestedList example (#7995) @apalanki
+- [SSR] Remove the singleton hack ✨ (#7965)
+- [docs] Fix SSR palette creation section (#7987) @Shastel
+- [docs] Remove typo on the Paper demo page (#7979) @jzakotnik
+- [docs] Add missing inheritance pragma to MenuItem (#7983) @yuchi
+- [example] Fix next.js CSS blink (cd0f883325b2b74515972d58f12868897fc34bf6) @oliviertassinari
+- [docs] Fix ROADMAP page issues (#8008) @oliviertassinari
+
+##### Core
+
+- [typescript] Add test for Grid (#7991) @sebald
+
+## 1.0.0-beta.7
+###### _Aug 30, 2017_
+
+This release is particularly dense! Here are some highlights:
+- We release 4 breaking changes at the same time.
+This is a first for the project.
+We wanted to release them as soon as possible, while the v1-beta market share is still at 10% of the v0.x version.
+Hopefully, the frequency of the breaking changes will slow down.
+- @rosskevin has upgraded the Flow dependency. v0.53 is providing a much better typing integration with React.
+- The Drawer component has some new features.
+One of them is allowing the documentation to fully take advantage of the server side rendering.
+We expect the documentation to render even faster with this beta.
+
+Big thanks to the 12 contributors who made this release possible.
+
+##### Breaking changes
+
+- [theme] Use secondary wording over accent (#7906) @oliviertassinari
+
+```diff
+     const theme = createMuiTheme({
+-      palette: createPalette({ primary: deepOrange, accent: green }),
++      palette: createPalette({ primary: deepOrange, secondary: green }),
+     });
+```
+
+```diff
+   flatAccent: {
+-    color: theme.palette.accent.A200,
++    color: theme.palette.secondary.A200,
+```
+
+- [Drawer] New improvements (#7925) @oliviertassinari
+
+
+```diff
+-<Drawer docked />
++<Drawer type="persistent" />
+```
+
+- [theme] Simplification of the API (#7934) @oliviertassinari
+  - If you are using a direct import of `material-ui/styles/theme`, the path changed:
+  ```diff
+  -import createMuiTheme from 'material-ui/styles/theme';
+  +import createMuiTheme from 'material-ui/styles/createMuiTheme';
+  ```
+
+  - We have removed the intermediary functions, now you can provide a nested structure to override the generated theme structure inside the first argument of `createMuiTheme()`. Notice that you can still change the output object before providing it to the `<MuiThemeProvider />`.
+
+  ```diff
+   const theme = createMuiTheme({
+  -  palette: createPalette({
+  +  palette: {
+       primary: blue,
+       secondary: pink,
+     }),
+  -  typography: createTypography(palette, {
+  +  typography: {
+       // System font
+       fontFamily:
+         '-apple-system,system-ui,BlinkMacSystemFont,' +
+         '"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+  -  }),
+  +  },
+  -},
+  +});
+  ```
+
+- [Input] Better support required field (#7955) @oliviertassinari
+
+Following Bootstrap, we are now forwarding the required property down to the input component. We used to only apply `aria-required`. This move makes us less opinionated and should help with native form handling.
+
+If you want to avoid the default browser required property handling, you can add a `noValidate` property to the parent `form`.
+
+##### Component Fixes / Enhancements
+
+- [TextField] Fix label position with dense margins (#7946) @phallguy
+- [FormControlLabel] Allow for node in the label prop (#7903) @Taldrain
+- [ListItemIcon] Icon should not shrink fixes (#7917) @gulderov
+- [withResponsiveFullScreen] missed type import (#7926) @rosskevin
+- [typescript] Fixes/improvements for withWith/withStyle/BottomNavigationButton (#7897) @sebald
+- [typescript] Update typings to popover changes (#7937) @sebald
+- [Popover] Expose the component (#7927) @oliviertassinari
+- [ButtonBase] Better warning message (#7904) @oliviertassinari
+- [Menu] Allow invalid children (#7907) @oliviertassinari
+- [Menu] Add a new warning (#7962) @oliviertassinari
+
+##### Docs
+
+- [docs] Fix missing props in css-in-js examples (#7867) @Izhaki
+- [docs] Fix docs build on Windows (#7938) @kybarg
+- [docs] remove flow from demos (#7883) @rosskevin
+- [docs] Use emoji directly instead of :shortcodes: (#7912) @markspolakovs
+- [docs] Show an example with the data- pattern (#7924) @Sigfried
+- [docs] Small fixes after the next.js refactorization (#7851) @oliviertassinari
+- [docs] Fix typo in floating-action button property of Button (#7951) @kgregory
+- [docs] Add the title for SEO (#7885) @oliviertassinari
+- [docs] Better support IE11 (#7939) @oliviertassinari
+- [docs] The style is injected at the bottom of the head (#7954) @oliviertassinari
+
+##### Core
+
+- [typescript] Refactor typings to modules (#7874) @sebald
+- [flow] Upgrade to flow 0.53.1 (#7869) @rosskevin
+- [core] Misc flow fixes (#7890) @rosskevin
+- [core] Upgrade prettier (#7941) @oliviertassinari
+
+## 1.0.0-beta.6
+###### _Aug 20, 2017_
+
+A big shout-out to @sebald for our first TypeScript coverage.
+Another notable change is [the migration of the documentation](#7759) to [Next.js](https://github.com/zeit/next.js), it's twice as fast as before 🚀.
+
+Big thanks to the 9 contributors who made this release possible.
+
+##### Breaking changes
+
+- [RadioGroup] Rename selectedValue to value (#7832) @
+
+Push #7741 initiative forward (use `value` and `onChange` as controlling properties)
+
+```diff
+-<RadioGroup selectedValue="foo">
++<RadioGroup value="foo">
+// ...
+```
+
+##### Component Fixes / Enhancements
+
+- [Table] Add the possibility of custom element type (#7765) @wieseljonas
+- [Input] remove extraneous props when using custom component (#7784) @rosskevin
+- [Input] should accommodate number and string values (#7791) @rosskevin
+- [Slide] Remove Slide offset property from src and docs (#7808) @gfpacheco
+- [typescript] Create typings for material-ui-icons (#7820) @sebald
+- [typescript] Add tests for typings + fixes (#7686) @sebald
+- [typescript] Update typings for beta.4 and beta.5 (#7793) @sebald
+- [typescript] Update <Slide> typings (#7817) @sebald
+- [TextField] Fix placeholder issue (#7838) @oliviertassinari
+
+##### Docs
+
+- [docs] Use Next.js: x2 performance (#7759) @oliviertassinari
+- [docs] Add the 'data grid for Material-UI' reference (#7786) @dxbykov
+- [docs] Renamed the styleSheet argument in withStyles to styles (#7819) @phiilu
+- [docs] Advanced table (#7824) @oliviertassinari
+- [docs] Fix typo (#7777) @Merkyl999x
+- [docs] Fix run-on sentences (#7792) @gitname
+- [docs] Show inherited components (#7846) @oliviertassinari
+- [docs] Add a team page (#7842) @oliviertassinari
+- [docs] Add a ROADMAP page (#7840) @oliviertassinari
+- [docs] Some last improvement before the release (#7847) @oliviertassinari
+
+##### Core
+
+- [core] Better usage of the CI 🚀 (#7833) @oliviertassinari
+- [core] Fix size-limit warning (#7822) @oliviertassinari
+- [icons] Automate release process (#7823) @oliviertassinari
+- [core] Update some dependencies (#7831) @oliviertassinari
+
 ## 1.0.0-beta.5
-###### _Aug 15, 2016_
+###### _Aug 15, 2017_
 
 Big thanks to the 11 contributors who made this release possible.
 
@@ -66,7 +255,7 @@ The primary motivation for this change is simplicity, it's also making our inter
 - [core] General maintenance (#7690) @oliviertassinari
 
 ## 1.0.0-beta.4
-###### _Aug 5, 2016_
+###### _Aug 5, 2017_
 
 Big thanks to the 7 contributors who made this release possible.
 

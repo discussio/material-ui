@@ -1,4 +1,5 @@
 // @flow weak
+// @inheritedComponent Paper
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -84,7 +85,7 @@ function MobileStepper(props) {
         <KeyboardArrowLeft />
         {backButtonText}
       </Button>
-      {type === 'dots' &&
+      {type === 'dots' && (
         <div className={classes.dots}>
           {[...new Array(steps)].map((_, step) => {
             const dotClassName = classNames(
@@ -96,11 +97,13 @@ function MobileStepper(props) {
             // eslint-disable-next-line react/no-array-index-key
             return <div key={step} className={dotClassName} />;
           })}
-        </div>}
-      {type === 'progress' &&
+        </div>
+      )}
+      {type === 'progress' && (
         <div className={classes.progress}>
           <LinearProgress mode="determinate" value={Math.ceil(activeStep / (steps - 1) * 100)} />
-        </div>}
+        </div>
+      )}
       <Button className={classes.button} onClick={onNext} disabled={disableNext}>
         {nextButtonText}
         <KeyboardArrowRight />

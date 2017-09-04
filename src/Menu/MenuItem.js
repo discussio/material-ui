@@ -1,7 +1,8 @@
 // @flow
+// @inheritedComponent ListItem
 
 import React from 'react';
-import type { Element } from 'react';
+import type { ComponentType, Node } from 'react';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 import ListItem from '../List/ListItem';
@@ -37,7 +38,7 @@ export type Props = {
   /**
    * Menu item contents.
    */
-  children?: Element<*>,
+  children?: Node,
   /**
    * Useful to extend the style applied to components.
    */
@@ -50,7 +51,7 @@ export type Props = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component?: string | Function,
+  component?: string | ComponentType<*>,
   /**
    * @ignore
    */

@@ -71,7 +71,6 @@ import { JssProvider, SheetsRegistry } from 'react-jss'
 import { create } from 'jss';
 import preset from 'jss-preset-default';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import createPalette from 'material-ui/styles/palette';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
 import { green, red } from 'material-ui/colors';
 
@@ -81,11 +80,11 @@ function handleRender(req, res) {
 
   // Create a theme instance.
   const theme = createMuiTheme({
-    palette: createPalette({
+    palette: {
       primary: green,
       accent: red,
       type: 'light',
-    }),
+    },
   });
 
   // Configure JSS
@@ -138,14 +137,14 @@ Let's take a look at our client file:
 `client.js`
 
 ```jsx
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import createPalette from 'material-ui/styles/palette';
 import { green, red } from 'material-ui/colors';
 import App from './App';
 
-class Main extends Component {
+class Main extends React.Component {
   // Remove the server-side injected CSS.
   componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side');

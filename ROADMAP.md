@@ -2,11 +2,11 @@
 
 The roadmap is a living document, and it is likely that priorities will change, but the list below should give some indication of our plans for the next major release, and for the future.
 
-:warning: New features based on `v0.18.x` have low priority and will most likely not be reviewed nor merged. We want to focus on bug fixes.
+⚠️ New features based on `v0.19.x` have low priority and will most likely not be reviewed nor merged. We want to focus on bug fixes.
 
 ## Version 1 (published on NPM under the next tag)
 
-Version 1 release is going to be huge :sparkles:.
+Version 1 release is going to be huge ✨.
 We host a temporary [documentation](https://material-ui-1dab0.firebaseapp.com) for the pre-releases.
 
 Material-UI was started [3 years ago](https://github.com/callemall/material-ui/commit/28b768913b75752ecf9b6bb32766e27c241dbc46).
@@ -48,12 +48,12 @@ That was also an issue for users wanting to use a single component without payin
 
 We later came up with an **inline-style approach** solving the majority of our issues.
 But:
-- We had lost around 25% of the performance :turtle:.
+- We had lost around 25% of the performance 🐢.
 Computing the inline-style at each render with no caching isn't really efficient.
-- Some more advanced CSS feature wasn't available, e.g. keyframes, pseudo-elements, pseudo-classes :nail_care:.
+- Some more advanced CSS feature wasn't available, e.g. keyframes, pseudo-elements, pseudo-classes 💅.
 - Media queries aren't available on the server. At least [not yet](http://caniuse.com/#feat=client-hints-dpr-width-viewport).
 - The debugging was really challenging. Browser dev tools aren't tuned for inline-styles.
-- React v15 has changed the method of injecting styles into the DOM meaning, for example, that prefixing all browsers for `display:flex` is no longer possible :boom:.
+- React v15 has changed the method of injecting styles into the DOM meaning, for example, that prefixing all browsers for `display:flex` is no longer possible 💥.
 
 ### Does JSS solve them?
 
@@ -76,8 +76,7 @@ That conversation could start on one of the following [issues](https://github.co
 
 ### How do I know if a component still needs to be migrated `v1-beta`?
 
-We have [Github project](https://github.com/callemall/material-ui/projects/1) to **coordinate** the work toward the `v1-beta` release.
-You can check the *Component to migrate* column to know the ones needing to be migrated to `v1-beta`.
+We have [some open issues](https://github.com/callemall/material-ui/issues?q=is%3Aopen+is%3Aissue+label%3ARefactoring+label%3Av1) to **coordinate** the work toward the `v1.0.0` release.
 
 ### How do I start migrating components to the `v1-beta` branch?
 
@@ -99,7 +98,7 @@ however, we are going to try to follow this plan:
 3. We fix the last API inconsistencies (as we can make breaking changes without having to worry much).
 4. We merge the beta branch into master
 5. We publish our first pre-releases, if all goes well, we move to the next step.
-6. We publish v1 :tada:
+6. We publish v1 🎉
 
 At that point, some features and components from the v0.x will be missing in the v1.
 So, what about them?
@@ -114,12 +113,15 @@ For UI related things, providing a wrapper for the functionality is often the wr
 We think that it should be done the other way around, i.e. providing a low-level API that can be combined with third-party libraries, e.g.:
  - [react-virtualized](https://github.com/bvaughn/react-virtualized)
  - [react-swipeable-views](https://github.com/oliviertassinari/react-swipeable-views)
+ - [react-autosuggest](https://github.com/moroshko/react-autosuggest)
+ - [react-popper](https://github.com/souporserious/react-popper)
+ - [downshift](https://github.com/paypal/downshift)
  - [react-dnd](https://github.com/gaearon/react-dnd)
 
 On the other hand, using a smart date library for the DatePicker / TimePicker would probably be much better as date management is tricky and not a core business.
 
 ## Future
 
-- [[#2863](https://github.com/callemall/material-ui/issues/2863)] Add missing components, and missing features from current ones.
-- [[#593](https://github.com/callemall/material-ui/issues/593)] Full support for react-native.
-- Add example on how to use [react-virtualized](https://github.com/bvaughn/react-virtualized) / [react-list](https://github.com/orgsync/react-list) for lists, menu items and table.
+- Add missing components, and missing features from current ones
+- [[#7721](https://github.com/callemall/material-ui/issues/7721)] Preact support
+- [[#593](https://github.com/callemall/material-ui/issues/593)] Support React Native
