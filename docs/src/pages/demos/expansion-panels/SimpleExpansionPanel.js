@@ -9,7 +9,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 const styles = theme => ({
   root: {
-    marginTop: 30,
+    marginTop: theme.spacing.unit * 4,
     width: '100%',
   },
   content: {
@@ -31,7 +31,6 @@ function SimpleExpansionPanel(props) {
           sit amet blandit leo lobortis eget.
         </Typography>
       </ExpansionPanel>
-
       <ExpansionPanel
         headerTitle="Disabled Expansion Panel"
         expandIcon={<ExpandMoreIcon />}

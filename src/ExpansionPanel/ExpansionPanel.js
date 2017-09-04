@@ -1,11 +1,14 @@
 // @flow
+// @inheritedComponent Paper
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Paper, Typography, IconButton } from '../';
 import ButtonBase from '../ButtonBase';
 import Collapse from '../transitions/Collapse';
+import IconButton from '../IconButton';
+import Paper from '../Paper';
+import Typography from '../Typography';
 import withStyles from '../styles/withStyles';
 
 export const styles = (theme: Object) => {
@@ -111,7 +114,7 @@ export const styles = (theme: Object) => {
   };
 };
 
-class ExpansionPanel extends Component {
+class ExpansionPanel extends React.Component {
   static defaultProps = {
     disabled: false,
     expandIcon: null,
