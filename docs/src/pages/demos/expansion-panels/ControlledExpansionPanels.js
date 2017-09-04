@@ -12,7 +12,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 4,
     width: '100%',
   },
   content: {
