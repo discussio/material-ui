@@ -1,13 +1,13 @@
-// @flow weak
+/* eslint-disable flowtype/require-valid-file-annotation */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import ExpansionPanel from 'material-ui/ExpansionPanel';
+import ExpansionPanel, {
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+} from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
-import { CardActions } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-import Button from 'material-ui/Button';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 const styles = theme => ({
@@ -15,13 +15,13 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 4,
     width: '100%',
   },
-  content: {
-    padding: theme.spacing.unit * 3,
+  label: {
+    fontSize: 15,
+    flexBasis: '33.3%',
   },
-  actions: {
-    height: 64,
-    padding: [0, theme.spacing.unit],
-    justifyContent: 'flex-end',
+  subLabel: {
+    fontSize: 15,
+    color: theme.palette.text.secondary,
   },
 });
 
@@ -41,50 +41,54 @@ class ControlledExpansionPanels extends Component {
     return (
       <div className={classes.root}>
         <ExpansionPanel
-          headerTitle="Expansion panel #1"
-          expandIcon={<ExpandMoreIcon />}
           id="panel1"
           expanded={this.state.expanded === 'panel1'}
           onChange={this.handleChange}
-          unmountOnExit
         >
-          <Typography className={classes.content} component="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-          <Divider />
-          <CardActions className={classes.actions}>
-            <Button dense color="primary">
-              Share
-            </Button>
-            <Button dense color="primary">
-              Learn More
-            </Button>
-          </CardActions>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.label}>General settings</Typography>
+            <Typography className={classes.subLabel}>I am an expansion panel</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+              maximus est, id dignissim quam.
+            </Typography>
+          </ExpansionPanelDetails>
         </ExpansionPanel>
         <ExpansionPanel
-          headerTitle="Expansion panel #2"
-          expandIcon={<ExpandMoreIcon />}
           id="panel2"
           expanded={this.state.expanded === 'panel2'}
           onChange={this.handleChange}
         >
-          <Typography className={classes.content} component="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.label}>Users</Typography>
+            <Typography className={classes.subLabel}>You are currently not an owner</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
+              diam eros in elit. Pellentesque convallis laoreet laoreet.
+            </Typography>
+          </ExpansionPanelDetails>
         </ExpansionPanel>
         <ExpansionPanel
-          headerTitle="Expansion panel #3"
-          expandIcon={<ExpandMoreIcon />}
           id="panel3"
           expanded={this.state.expanded === 'panel3'}
           onChange={this.handleChange}
         >
-          <Typography className={classes.content} component="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.label}>Advanced settings</Typography>
+            <Typography className={classes.subLabel}>
+              Filtering has been entirely disabled for whole web server
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
+              eros, vitae egestas augue. Duis vel est augue.
+            </Typography>
+          </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
     );

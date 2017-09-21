@@ -3,7 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import ExpansionPanel from 'material-ui/ExpansionPanel';
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
@@ -12,8 +15,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 4,
     width: '100%',
   },
-  content: {
-    padding: theme.spacing.unit * 3,
+  title: {
+    fontSize: 15,
+    fontWeight: theme.typography.fontWeightRegular,
   },
 });
 
@@ -21,24 +25,21 @@ function SimpleExpansionPanel(props) {
   const classes = props.classes;
   return (
     <div className={classes.root}>
-      <ExpansionPanel
-        headerTitle="Expansion panel title"
-        expandIcon={<ExpandMoreIcon />}
-        defaultExpanded
-      >
-        <Typography className={classes.content} component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-          sit amet blandit leo lobortis eget.
-        </Typography>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography className={classes.title}>Expansion Panel Title</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </ExpansionPanelDetails>
       </ExpansionPanel>
-      <ExpansionPanel
-        headerTitle="Disabled Expansion Panel"
-        expandIcon={<ExpandMoreIcon />}
-        disabled
-      >
-        <Typography className={classes.content} component="p">
-          Lorem ipsum dolor sit amet.
-        </Typography>
+      <ExpansionPanel disabled>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Disabled Expansion Panel</Typography>
+        </ExpansionPanelSummary>
       </ExpansionPanel>
     </div>
   );

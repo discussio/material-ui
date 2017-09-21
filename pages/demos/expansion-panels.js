@@ -10,6 +10,14 @@ function Page() {
     <MarkdownDocs
       markdown={markdown}
       demos={{
+        'pages/demos/expansion-panels/DetailedExpansionPanel.js': {
+          js: require('docs/src/pages/demos/expansion-panels/DetailedExpansionPanel').default,
+          raw: preval`
+module.exports = require('fs')
+  .readFileSync(require
+    .resolve('docs/src/pages/demos/expansion-panels/DetailedExpansionPanel'), 'utf8')
+`,
+        },
         'pages/demos/expansion-panels/SimpleExpansionPanel.js': {
           js: require('docs/src/pages/demos/expansion-panels/SimpleExpansionPanel').default,
           raw: preval`
