@@ -35,15 +35,10 @@ const styles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
-    height: 'auto',
+    height: '100%',
     width: drawerWidth,
   },
-  drawerHeader: {
-    height: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 64,
-    },
-  },
+  drawerHeader: theme.mixins.toolbar,
   content: {
     backgroundColor: theme.palette.background.default,
     width: '100%',

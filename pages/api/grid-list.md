@@ -14,11 +14,11 @@
 | component | union:&nbsp;string<br>&nbsp;func<br> | 'ul' | The component used for the root node. Either a string to use a DOM element or a component. By default we map the type to a good default headline component. |
 | spacing | number | 4 | Number of px for the spacing between tiles. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 

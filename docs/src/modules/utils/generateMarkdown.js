@@ -23,12 +23,6 @@ function getDeprecatedInfo(type) {
 function generatePropDescription(description, type) {
   let deprecated = '';
 
-  // FIXME: unsupported flow props from 0.53.x upgrade
-  // https://github.com/reactjs/react-docgen/issues/207
-  if (type === undefined) {
-    return '';
-  }
-
   if (type.name === 'custom') {
     const deprecatedInfo = getDeprecatedInfo(type);
 
@@ -39,12 +33,13 @@ function generatePropDescription(description, type) {
 
   const parsed = parseDoctrine(description);
 
-  // two new lines result in a newline in the table. all other new lines
-  // must be eliminated to prevent markdown mayhem.
+  // Two new lines result in a newline in the table.
+  // All other new lines must be eliminated to prevent markdown mayhem.
   const jsDocText = parsed.description
     .replace(/\n\n/g, '<br>')
     .replace(/\n/g, ' ')
-    .replace(/\r/g, '');
+    .replace(/\r/g, '')
+    .replace(/\|/g, '&#124;'); // As the pipe is use for the table structure
 
   if (parsed.tags.some(tag => tag.title === 'ignore')) {
     return null;
@@ -92,12 +87,6 @@ function generatePropDescription(description, type) {
 }
 
 function generatePropType(type) {
-  // FIXME: unsupported flow props from 0.53.x upgrade
-  // https://github.com/reactjs/react-docgen/issues/207
-  if (type === undefined) {
-    return '';
-  }
-
   switch (type.name) {
     case 'func':
       return 'function';
@@ -158,12 +147,6 @@ function generateProps(reactAPI) {
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|\n`;
 
-  // FIXME: unsupported flow props from 0.53.x upgrade
-  // https://github.com/reactjs/react-docgen/issues/207
-  if (reactAPI.props === undefined) {
-    return text;
-  }
-
   text = Object.keys(reactAPI.props)
     .sort()
     .reduce((textProps, propRaw) => {
@@ -206,7 +189,7 @@ function generateClasses(reactAPI) {
     ? `
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the \`classes\` property.
+You can override all the class names injected by Material-UI thanks to the \`classes\` property.
 This property accepts the following keys:
 ${reactAPI.styles.classes.map(className => `- \`${className}\``).join('\n')}
 
@@ -265,7 +248,8 @@ export default function generateMarkdown(reactAPI: Object) {
     `# ${reactAPI.name}\n\n` +
     `${reactAPI.description}\n\n` +
     `${generateProps(reactAPI)}\n` +
-    'Any other properties supplied will be spread to the root element.\n' +
+    'Any other properties supplied will be ' +
+    '[spread to the root element](/customization/api#spread).\n' +
     `${generateClasses(reactAPI)}\n` +
     `${generateInheritance(reactAPI)}` +
     `${generateDemos(reactAPI)}\n`

@@ -10,7 +10,7 @@
 | MenuListProps | Object |  | Properties applied to the `MenuList` element. |
 | anchorEl | Object |  | The DOM element used to set the position of the menu. |
 | children | Node |  | Menu contents, normally `MenuItem`s. |
-| classes | Object | {} | Useful to extend the style applied to components. |
+| classes | Object |  | Useful to extend the style applied to components. |
 | onEnter | TransitionCallback |  | Callback fired before the Menu enters. |
 | onEntered | TransitionCallback |  | Callback fired when the Menu has entered. |
 | onEntering | TransitionCallback |  | Callback fired when the Menu is entering. |
@@ -21,11 +21,11 @@
 | open | boolean | false | If `true`, the menu is visible. |
 | transitionDuration | union:&nbsp;number<br>&nbsp;'auto'<br> | 'auto' | The length of the transition in `ms`, or 'auto' |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 

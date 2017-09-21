@@ -7,6 +7,7 @@
 ## Props
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
+| FormControlClasses | Object |  | `classes` property applied to the `FormControl` element. |
 | children | Node |  | The contents of the `InputLabel`. |
 | classes | Object |  | Useful to extend the style applied to components. |
 | disableAnimation | boolean | false | If `true`, the transition animation is disabled. |
@@ -17,11 +18,11 @@
 | required | boolean |  | if `true`, the label will indicate that the input is required. |
 | shrink | boolean |  | If `true`, the label is shrunk. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `formControl`

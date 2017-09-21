@@ -85,7 +85,7 @@ describe('<Input />', () => {
       return result;
     }, {});
 
-    const wrapper = shallow(<Input {...handlers} />);
+    const wrapper = mount(<Input {...handlers} />);
 
     events.forEach(n => {
       const event = n.charAt(2).toLowerCase() + n.slice(3);
@@ -142,9 +142,9 @@ describe('<Input />', () => {
     });
   });
 
-  describe('prop: component', () => {
+  describe('prop: inputComponent', () => {
     it('should accept any component', () => {
-      const wrapper = shallow(<Input component="span" />);
+      const wrapper = shallow(<Input inputComponent="span" />);
       assert.strictEqual(wrapper.find('span').length, 1);
     });
   });
@@ -387,6 +387,14 @@ describe('<Input />', () => {
       it(`is false for SSR defaultValue ${value}`, () => {
         assert.strictEqual(isDirty({ defaultValue: value }, true), false);
       });
+    });
+  });
+
+  describe('prop: inputProps', () => {
+    it('should apply the props on the input', () => {
+      const wrapper = shallow(<Input inputProps={{ className: 'foo', readOnly: true }} />);
+      assert.strictEqual(wrapper.find('input').props().className, 'foo');
+      assert.strictEqual(wrapper.find('input').props().readOnly, true);
     });
   });
 });

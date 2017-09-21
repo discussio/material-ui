@@ -16,11 +16,11 @@
 | src | string |  | The `src` attribute for the `img` element. |
 | srcSet | string |  | The `srcSet` attribute for the `img` element. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `colorDefault`

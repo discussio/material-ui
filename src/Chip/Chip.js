@@ -5,13 +5,14 @@ import type { Element } from 'react';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import withStyles from '../styles/withStyles';
-import DeleteIcon from '../svg-icons/cancel';
+import CancelIcon from '../svg-icons/Cancel';
 import { emphasize, fade } from '../styles/colorManipulator';
 
 export const styles = (theme: Object) => {
   const height = 32;
   const backgroundColor = emphasize(theme.palette.background.default, 0.12);
   const deleteIconColor = fade(theme.palette.text.primary, 0.26);
+
   return {
     root: {
       fontFamily: theme.typography.fontFamily,
@@ -33,6 +34,8 @@ export const styles = (theme: Object) => {
       padding: 0, // Remove `button` padding
     },
     clickable: {
+      // Remove grey highlight
+      WebkitTapHighlightColor: theme.palette.common.transparent,
       cursor: 'pointer',
       '&:hover, &:focus': {
         backgroundColor: emphasize(backgroundColor, 0.08),
@@ -67,6 +70,8 @@ export const styles = (theme: Object) => {
       cursor: 'inherit',
     },
     deleteIcon: {
+      // Remove grey highlight
+      WebkitTapHighlightColor: theme.palette.common.transparent,
       color: deleteIconColor,
       cursor: 'pointer',
       height: 'auto',
@@ -115,7 +120,7 @@ export type Props = {
   /**
    * @ignore
    */
-  tabIndex?: number,
+  tabIndex?: number | string,
 };
 
 type AllProps = DefaultProps & Props;
@@ -125,6 +130,7 @@ type AllProps = DefaultProps & Props;
  */
 class Chip extends React.Component<AllProps> {
   props: AllProps;
+
   chipRef: ?HTMLElement = null;
 
   handleDeleteIconClick = event => {
@@ -181,7 +187,7 @@ class Chip extends React.Component<AllProps> {
     let deleteIcon = null;
     if (onRequestDelete) {
       deleteIcon = (
-        <DeleteIcon className={classes.deleteIcon} onClick={this.handleDeleteIconClick} />
+        <CancelIcon className={classes.deleteIcon} onClick={this.handleDeleteIconClick} />
       );
     }
 

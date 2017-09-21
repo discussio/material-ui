@@ -5,6 +5,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   Theme,
+  withTheme,
 } from '../../src/styles';
 import Button from '../../src/Button/Button';
 
@@ -72,8 +73,8 @@ const theme = createMuiTheme({
 
 const customTheme = createMuiTheme({
   palette: {
-    type: 'dark'
-  }
+    type: 'dark',
+  },
 });
 
 function OverridesTheme() {
@@ -84,4 +85,42 @@ function OverridesTheme() {
       </Button>
     </MuiThemeProvider>
   );
+}
+
+// withTheme
+
+const ThemedComponent: React.SFC<{ theme: Theme }> = ({ theme }) =>
+  <div>
+    {theme.spacing.unit}
+  </div>;
+const ComponentWithTheme = withTheme(ThemedComponent);
+
+// withStyles + withTheme
+interface AllTheProps {
+  theme: Theme;
+  classes: StyledComponentClassNames;
+}
+
+const AllTheStyles: React.SFC<AllTheProps> = ({ theme, classes }) =>
+  <div className={classes.root}>
+    {theme.palette.text.primary}
+  </div>;
+
+const AllTheComposition = withTheme(
+  withStyles<{ theme: Theme }, StyledComponentClassNames>(styles)(AllTheStyles)
+);
+
+// As decorator
+@withStyles(styles)
+class DecoratedComponent extends React.Component<
+  StyledComponentProps & { classes: StyledComponentClassNames }
+> {
+  render() {
+    const { classes, text } = this.props;
+    return (
+      <div className={classes.root}>
+        {text}
+      </div>
+    );
+  }
 }

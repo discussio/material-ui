@@ -56,7 +56,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
-    height: 'auto',
+    height: '100%',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -65,6 +65,7 @@ const styles = theme => ({
   },
   drawerPaperClose: {
     width: 60,
+    overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -79,10 +80,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
-    height: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 64,
-    },
+    ...theme.mixins.toolbar,
   },
   content: {
     width: '100%',

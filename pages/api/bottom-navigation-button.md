@@ -13,15 +13,16 @@
 | showLabel | boolean |  | If `true`, the BottomNavigationButton will show its label. |
 | value | any |  | You can provide your own value. Otherwise, we fallback to the child position index. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `selected`
 - `selectedIconOnly`
+- `wrapper`
 - `label`
 - `selectedLabel`
 - `hiddenLabel`

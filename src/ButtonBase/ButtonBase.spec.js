@@ -45,7 +45,7 @@ describe('<ButtonBase />', () => {
       const wrapper = shallow(<ButtonBase component="span" role="checkbox" aria-checked={false} />);
       assert.strictEqual(wrapper.name(), 'span');
       assert.strictEqual(wrapper.props().role, 'checkbox', 'should be role checkbox');
-      assert.strictEqual(wrapper.props().tabIndex, '0', 'should be 0');
+      assert.strictEqual(wrapper.props().tabIndex, 0, 'should be 0');
     });
 
     it('should spread props on button', () => {
@@ -350,7 +350,7 @@ describe('<ButtonBase />', () => {
   describe('prop: disabled', () => {
     it('should apply the right tabIndex', () => {
       const wrapper = shallow(<ButtonBase disabled>Hello</ButtonBase>);
-      assert.strictEqual(wrapper.props().tabIndex, '-1', 'should not receive the focus');
+      assert.strictEqual(wrapper.props().tabIndex, -1, 'should not receive the focus');
     });
 
     it('should also apply it when using component', () => {
@@ -424,7 +424,6 @@ describe('<ButtonBase />', () => {
           Hello
         </ButtonBase.Naked>,
       );
-      assert.match(consoleErrorMock.args()[0][0], /Material-UI: please provide a class/);
       const instance = wrapper.instance();
       instance.focusKeyPressed = true;
       wrapper.simulate('focus');
@@ -524,18 +523,17 @@ describe('<ButtonBase />', () => {
     });
   });
 
-  describe('focus()', () => {
-    it('should call the focus on the instance.button', () => {
-      const instance = mount(
-        <ButtonBase.Naked classes={{}} component="span">
-          Hello
-        </ButtonBase.Naked>,
-      ).instance();
-      instance.button = {
-        focus: spy(),
-      };
-      instance.focus();
-      assert.strictEqual(instance.button.focus.callCount, 1);
+  describe('prop: rootRef', () => {
+    it('should be able to get a ref of the root element', () => {
+      const refCallback = spy();
+      const wrapper = mount(<ButtonBase rootRef={refCallback}>Hello</ButtonBase>);
+      assert.strictEqual(refCallback.callCount, 1, 'should call the ref function');
+      refCallback.args[0][0].focus();
+      assert.strictEqual(
+        document.activeElement,
+        wrapper.getDOMNode(),
+        'should be able to use the ref to focus the button',
+      );
     });
   });
 });

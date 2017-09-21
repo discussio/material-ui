@@ -18,8 +18,8 @@ export const styles = (theme: Object) => ({
     // slight alteration to spec spacing to match visual spec result
     transform: `translate(0, ${theme.spacing.unit * 3 - 1}px) scale(1)`,
   },
-  // Compensation for the `Input.inputDense` style.
   labelDense: {
+    // Compensation for the `Input.inputDense` style.
     transform: `translate(0, ${theme.spacing.unit * 2.5 + 1}px) scale(1)`,
   },
   shrink: {
@@ -69,6 +69,10 @@ export type Props = {
    */
   error?: boolean,
   /**
+   * `classes` property applied to the `FormControl` element.
+   */
+  FormControlClasses?: Object,
+  /**
    * If `true`, the input of this label is focused.
    */
   focused?: boolean,
@@ -96,6 +100,7 @@ function InputLabel(props: AllProps, context: { muiFormControl: Object }) {
     children,
     classes,
     className: classNameProp,
+    FormControlClasses,
     shrink: shrinkProp,
     margin: marginProp,
     ...other
@@ -126,7 +131,7 @@ function InputLabel(props: AllProps, context: { muiFormControl: Object }) {
   );
 
   return (
-    <FormLabel className={className} {...other}>
+    <FormLabel className={className} classes={FormControlClasses} {...other}>
       {children}
     </FormLabel>
   );

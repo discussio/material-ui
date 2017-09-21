@@ -2,7 +2,7 @@
 // @inheritedComponent FormGroup
 
 import React from 'react';
-import type { ChildrenArray } from 'react';
+import type { ChildrenArray, Node } from 'react';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 import FormGroup from '../Form/FormGroup';
@@ -24,7 +24,7 @@ export type Props = {
   /**
    * The content of the component.
    */
-  children?: $ReadOnlyArray<ChildrenArray<*>>,
+  children?: $ReadOnlyArray<ChildrenArray<Node>>,
   /**
    * Useful to extend the style applied to components.
    */
@@ -113,14 +113,17 @@ class RadioGroup extends React.Component<AllProps, void> {
         {...other}
       >
         {React.Children.map(children, (child, index) => {
-          const selected = value === child.props.value;
+          if (!React.isValidElement(child)) {
+            return null;
+          }
+
           return React.cloneElement(child, {
             key: index,
             name,
             inputRef: node => {
               this.radios.push(node);
             },
-            checked: selected,
+            checked: value === child.props.value,
             onChange: this.handleRadioChange,
           });
         })}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyledComponent } from '..';
+import { StyledComponent, StyledComponentProps } from '..';
 import { HiddenProps } from '../Hidden/Hidden';
 import { Breakpoint } from '../styles/createBreakpoints';
 
@@ -21,13 +21,13 @@ export type GridWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
 export type GridSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 export type GridProps = {
-  component?: React.ReactNode;
+  component?: React.ReactType;
   container?: boolean;
   item?: boolean;
   align?: GridAlignment;
   direction?: GridDirection;
   spacing?: GridSpacing;
-  hidden?: HiddenProps;
+  hidden?: HiddenProps & StyledComponentProps<any>;
   justify?: GridJustification;
   wrap?: GridWrap;
 } & Partial<{ [key in Breakpoint]: boolean | GridSize }>;

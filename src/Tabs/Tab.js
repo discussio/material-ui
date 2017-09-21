@@ -57,6 +57,13 @@ export const styles = (theme: Object) => ({
   fullWidth: {
     flexGrow: 1,
   },
+  wrapper: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    flexDirection: 'column',
+  },
   labelContainer: {
     paddingTop: 6,
     paddingBottom: 6,
@@ -268,8 +275,10 @@ class Tab extends React.Component<AllProps, State> {
         {...other}
         onClick={this.handleChange}
       >
-        {icon}
-        {label}
+        <span className={classes.wrapper}>
+          {icon}
+          {label}
+        </span>
       </ButtonBase>
     );
   }

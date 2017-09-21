@@ -1,7 +1,8 @@
 // @flow weak
 
 import React from 'react';
-import { JssProvider, SheetsRegistry } from 'react-jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { SheetsRegistry } from 'react-jss/lib/jss';
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 import CssInJs from './CssInJs';
 
@@ -9,7 +10,6 @@ const sheetsRegistry = new SheetsRegistry();
 const theme = createMuiTheme();
 
 class JssRegistry extends React.Component<any, any> {
-  static defaultProps: {};
   state = {
     length: 0,
   };

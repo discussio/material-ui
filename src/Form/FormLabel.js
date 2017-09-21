@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ComponentType, Node } from 'react';
+import type { ElementType, Node } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
@@ -13,6 +13,7 @@ export const styles = (theme: Object) => {
       fontFamily: theme.typography.fontFamily,
       color: theme.palette.input.labelText,
       lineHeight: 1,
+      padding: 0,
     },
     focused: {
       color: focusColor,
@@ -48,7 +49,7 @@ export type Props = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component?: string | ComponentType<*>,
+  component?: ElementType,
   /**
    * If `true`, the label should be displayed in a disabled state.
    */

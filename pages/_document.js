@@ -2,9 +2,10 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import getContext from 'docs/src/modules/styles/getContext';
-import { JssProvider } from 'react-jss';
 import CleanCSS from 'clean-css';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getContext from 'docs/src/modules/styles/getContext';
+import config from 'docs/src/config';
 
 const cleanCSS = new CleanCSS();
 
@@ -40,20 +41,45 @@ class MyDocument extends Document {
           />
           <style id="insertion-point-jss" />
           {/* Twitter */}
-          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@MaterialUI" />
           <meta name="twitter:title" content="Material-UI" />
           <meta
             name="twitter:description"
             content="React Components that Implement Google's Material Design."
           />
-          <meta name="twitter:image" content="/static/icons/512x512.png" />
+          <meta
+            name="twitter:image"
+            content="https://material-ui-1dab0.firebaseapp.com/static/brand.png"
+          />
+          {/* Facebook */}
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Material-UI" />
+          <meta
+            property="og:description"
+            content="React Components that Implement Google's Material Design."
+          />
+          <meta
+            property="og:image"
+            content="https://material-ui-1dab0.firebaseapp.com/static/brand.png"
+          />
           <link rel="shortcut icon" href="/static/favicon.ico" />
         </Head>
         <body>
           <Main />
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${config.google.id}`} />
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};
+gtag('js', new Date());
+              `,
+            }}
+          />
           <NextScript />
-          <script src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js" async defer />
+          <script async src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js" />
         </body>
       </html>
     );

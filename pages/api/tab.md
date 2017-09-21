@@ -13,11 +13,11 @@
 | label | Element |  | The label element. |
 | value | any |  | You can provide your own value. Otherwise, we fallback to the child position index. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `rootLabelIcon`
@@ -31,6 +31,7 @@ This property accepts the following keys:
 - `rootInheritSelected`
 - `rootInheritDisabled`
 - `fullWidth`
+- `wrapper`
 - `labelContainer`
 - `label`
 - `labelWrapped`

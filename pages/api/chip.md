@@ -12,11 +12,11 @@ Chips represent complex entities in small blocks, such as a contact.
 | label | Element |  | The content of the label. |
 | onRequestDelete | signature |  | Callback function fired when the delete icon is clicked. If set, the delete icon will be shown. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `clickable`

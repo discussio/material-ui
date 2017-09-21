@@ -74,13 +74,13 @@ For instance:
 ## Customizing all instances of a component type
 
 When the configuration variables aren't powerful enough, you can take advantage of the
-`overrides` key to potentially change every single style injected by Material-UI into the DOM.
+`overrides` key of the `theme` to potentially change every single style injected by Material-UI into the DOM.
 That's a really powerful feature.
 
 {{demo='pages/customization/OverridesTheme.js'}}
 
 The list of these customization points for each component is documented under the **Component API** section.
-For instance, you can have a look at the [Button](/component-api/button#css-api).
+For instance, you can have a look at the [Button](/api/button#css-api).
 Alternatively, you can always have a look at the [implementation](https://github.com/callemall/material-ui/blob/v1-beta/src/Button/Button.js).
 
 ## Accessing the theme in a component

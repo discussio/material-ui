@@ -87,6 +87,7 @@ export const styles = {
     // Add iOS momentum scrolling.
     WebkitOverflowScrolling: 'touch',
     // So we see the menu when it's empty.
+    // It's most likely on issue on userland.
     minWidth: 16,
     minHeight: 16,
   },
@@ -94,24 +95,47 @@ export const styles = {
 
 class Menu extends React.Component<AllProps, void> {
   props: AllProps;
+
   static defaultProps = {
-    classes: {},
     open: false,
     transitionDuration: 'auto',
   };
 
+  componentDidMount() {
+    if (this.props.open) {
+      this.focus();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.open && this.props.open) {
+      // Needs to refocus as when a menu is rendered into another Modal,
+      // the first modal might change the focus to prevent any leak.
+      this.focus();
+    }
+  }
+
   menuList = undefined;
+
+  focus = () => {
+    if (this.menuList && this.menuList.selectedItem) {
+      // $FlowFixMe
+      findDOMNode(this.menuList.selectedItem).focus();
+      return;
+    }
+
+    const menuList = findDOMNode(this.menuList);
+    if (menuList && menuList.firstChild) {
+      // $FlowFixMe
+      menuList.firstChild.focus();
+    }
+  };
 
   handleEnter = (element: HTMLElement) => {
     const menuList = findDOMNode(this.menuList);
 
-    if (this.menuList && this.menuList.selectedItem) {
-      // $FlowFixMe
-      findDOMNode(this.menuList.selectedItem).focus();
-    } else if (menuList && menuList.firstChild) {
-      // $FlowFixMe
-      menuList.firstChild.focus();
-    }
+    // Focus so the scroll computation of the Popover works as expected.
+    this.focus();
 
     // Let's ignore that piece of logic if users are already overriding the width
     // of the menu.
@@ -132,12 +156,11 @@ class Menu extends React.Component<AllProps, void> {
   handleListKeyDown = (event: SyntheticUIEvent<>, key: string) => {
     if (key === 'tab') {
       event.preventDefault();
+
       if (this.props.onRequestClose) {
-        return this.props.onRequestClose(event);
+        this.props.onRequestClose(event);
       }
     }
-
-    return false;
   };
 
   getContentAnchorEl = () => {

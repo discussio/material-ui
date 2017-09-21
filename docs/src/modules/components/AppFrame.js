@@ -13,9 +13,10 @@ import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import LightbulbOutline from 'material-ui-icons/LightbulbOutline';
-import Github from 'docs/src/modules/components/Github';
+import Github from 'docs/src/modules/components/GitHub';
 import AppDrawer from 'docs/src/modules/components/AppDrawer';
 import AppSearch from 'docs/src/modules/components/AppSearch';
+import Tooltip from 'material-ui/Tooltip';
 import { pageToTitle } from 'docs/src/modules/utils/helpers';
 
 // Disaply a progress bar between route transitions
@@ -31,9 +32,11 @@ NProgress.configure({
 Router.onRouteChangeStart = () => {
   NProgress.start();
 };
+
 Router.onRouteChangeComplete = () => {
   NProgress.done();
 };
+
 Router.onRouteChangeError = () => {
   NProgress.done();
 };
@@ -114,7 +117,6 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
   },
   appBarHome: {
-    backgroundColor: 'transparent',
     boxShadow: 'none',
   },
   appBarShift: {
@@ -188,14 +190,15 @@ class AppFrame extends React.Component<any, any> {
             )}
             <div className={classes.grow} />
             <AppSearch />
-            <IconButton
-              title="Toggle light/dark theme"
-              color="contrast"
-              aria-label="change theme"
-              onClick={this.handleToggleShade}
-            >
-              <LightbulbOutline />
-            </IconButton>
+            <Tooltip title="Toggle light/dark theme" enterDelay={300}>
+              <IconButton
+                color="contrast"
+                aria-label="change theme"
+                onClick={this.handleToggleShade}
+              >
+                <LightbulbOutline />
+              </IconButton>
+            </Tooltip>
             <IconButton
               component="a"
               title="GitHub"

@@ -19,10 +19,8 @@ import Backdrop from './Backdrop';
 import Portal from './Portal';
 import type { TransitionCallback } from './Transition';
 
-/**
- * Modals don't open on the server so this won't break concurrency.
- * Could also put this on context.
- */
+// Modals don't open on the server so this won't break concurrency.
+// Could also put this on context.
 const modalManager = createModalManager();
 
 export const styles = (theme: Object) => ({
@@ -157,7 +155,6 @@ class Modal extends React.Component<AllProps, State> {
     backdropComponent: Backdrop,
     backdropTransitionDuration: 300,
     backdropInvisible: false,
-    classes: {},
     keepMounted: false,
     disableBackdrop: false,
     ignoreBackdropClick: false,
@@ -178,7 +175,7 @@ class Modal extends React.Component<AllProps, State> {
 
   componentDidMount() {
     this.mounted = true;
-    if (this.props.show === true) {
+    if (this.props.show) {
       this.handleShow();
     }
   }
@@ -199,6 +196,7 @@ class Modal extends React.Component<AllProps, State> {
     if (!prevProps.show && this.props.show) {
       this.handleShow();
     }
+    // We are waiting for the onExited callback to call handleHide.
   }
 
   componentWillUnmount() {
@@ -221,28 +219,6 @@ class Modal extends React.Component<AllProps, State> {
     }
   }
 
-  focus() {
-    const currentFocus = activeElement(ownerDocument(ReactDOM.findDOMNode(this)));
-    const modalContent = this.modal && this.modal.lastChild;
-    const focusInModal = currentFocus && contains(modalContent, currentFocus);
-
-    if (modalContent && !focusInModal) {
-      this.lastFocus = currentFocus;
-
-      if (!modalContent.hasAttribute('tabIndex')) {
-        modalContent.setAttribute('tabIndex', -1);
-        warning(
-          false,
-          'Material-UI: the modal content node does not accept focus. ' +
-            'For the benefit of assistive technologies, ' +
-            'the tabIndex of the node is being set to "-1".',
-        );
-      }
-
-      modalContent.focus();
-    }
-  }
-
   restoreLastFocus() {
     if (this.lastFocus && this.lastFocus.focus) {
       this.lastFocus.focus();
@@ -256,6 +232,26 @@ class Modal extends React.Component<AllProps, State> {
     this.onDocumentKeyUpListener = addEventListener(doc, 'keyup', this.handleDocumentKeyUp);
     this.onFocusListener = addEventListener(doc, 'focus', this.handleFocusListener, true);
     this.focus();
+  }
+
+  focus() {
+    const currentFocus = activeElement(ownerDocument(ReactDOM.findDOMNode(this)));
+    const modalContent = this.modal && this.modal.lastChild;
+    const focusInModal = currentFocus && contains(modalContent, currentFocus);
+
+    if (modalContent && !focusInModal) {
+      if (!modalContent.hasAttribute('tabIndex')) {
+        modalContent.setAttribute('tabIndex', -1);
+        warning(
+          false,
+          'Material-UI: the modal content node does not accept focus. ' +
+            'For the benefit of assistive technologies, ' +
+            'the tabIndex of the node is being set to "-1".',
+        );
+      }
+
+      modalContent.focus();
+    }
   }
 
   handleHide() {
@@ -283,16 +279,18 @@ class Modal extends React.Component<AllProps, State> {
       return;
     }
 
-    if (keycode(event) === 'esc') {
-      const { onEscapeKeyUp, onRequestClose, ignoreEscapeKeyUp } = this.props;
+    if (keycode(event) !== 'esc') {
+      return;
+    }
 
-      if (onEscapeKeyUp) {
-        onEscapeKeyUp(event);
-      }
+    const { onEscapeKeyUp, onRequestClose, ignoreEscapeKeyUp } = this.props;
 
-      if (onRequestClose && !ignoreEscapeKeyUp) {
-        onRequestClose(event);
-      }
+    if (onEscapeKeyUp) {
+      onEscapeKeyUp(event);
+    }
+
+    if (onRequestClose && !ignoreEscapeKeyUp) {
+      onRequestClose(event);
     }
   };
 
@@ -397,7 +395,7 @@ class Modal extends React.Component<AllProps, State> {
     }
 
     if (tabIndex === undefined) {
-      childProps.tabIndex = tabIndex == null ? '-1' : tabIndex;
+      childProps.tabIndex = tabIndex == null ? -1 : tabIndex;
     }
 
     let backdropProps;

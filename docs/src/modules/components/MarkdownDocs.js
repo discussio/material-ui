@@ -10,6 +10,7 @@ import Button from 'material-ui/Button';
 import AppContent from 'docs/src/modules/components/AppContent';
 import MarkdownElement from 'docs/src/modules/components/MarkdownElement';
 import Demo from 'docs/src/modules/components/Demo';
+import Carbon from 'docs/src/modules/components/Carbon';
 import { getComponents, getContents, getTitle } from 'docs/src/modules/utils/parseMarkdown';
 
 const styles = {
@@ -58,6 +59,7 @@ function MarkdownDocs(props, context) {
           {'Edit this page'}
         </Button>
       </div>
+      <Carbon key={sourceLocation} />
       {contents.map(content => {
         const match = content.match(demoRegexp);
 
@@ -77,7 +79,7 @@ function MarkdownDocs(props, context) {
 ${components
             .map(component => `- [&lt;${component} /&gt;](/api/${kebabCase(component)})`)
             .join('\n')}
-            `}
+          `}
         />
       ) : null}
     </AppContent>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyledComponent } from '..';
 import { PaperProps } from '../Paper';
 import { TransitionHandlers } from '../internal/Transition';
+import { ModalProps } from '../internal/Modal';
 
 export type Origin = {
   horizontal: 'left' | 'center' | 'right' | number;
@@ -24,7 +25,8 @@ export type PopoverProps = {
   transformOrigin?: Origin;
   transitionDuration?: number | 'auto';
   theme?: Object;
+  PaperProps?: Partial<PaperProps>;
 } & Partial<TransitionHandlers> &
-  PaperProps;
+  ModalProps;
 
 export default class Popover extends StyledComponent<PopoverProps> {}

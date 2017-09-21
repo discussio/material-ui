@@ -2,8 +2,7 @@
 
 import React from 'react';
 import warning from 'warning';
-import classNames from 'classnames';
-import { keys as breakpoints } from '../styles/createBreakpoints';
+import { keys as breakpointKeys } from '../styles/createBreakpoints';
 import { capitalizeFirstLetter } from '../utils/helpers';
 import withStyles from '../styles/withStyles';
 import type { HiddenProps } from './types';
@@ -24,7 +23,7 @@ function generateStyles(theme) {
     display: 'none',
   };
 
-  return theme.breakpoints.keys.reduce((styles, key) => {
+  return breakpointKeys.reduce((styles, key) => {
     styles[`only${capitalizeFirstLetter(key)}`] = {
       [theme.breakpoints.only(key)]: hidden,
     };
@@ -67,13 +66,15 @@ function HiddenCss(props: AllProps) {
   warning(
     Object.keys(other).length === 0 ||
       (Object.keys(other).length === 1 && other.hasOwnProperty('ref')),
-    `Material-UI: unsupported properties received ${JSON.stringify(other)} by \`<Hidden />\`.`,
+    `Material-UI: unsupported properties received ${Object.keys(other).join(
+      ', ',
+    )} by \`<Hidden />\`.`,
   );
 
   const className = [];
 
-  for (let i = 0; i < breakpoints.length; i += 1) {
-    const breakpoint = breakpoints[i];
+  for (let i = 0; i < breakpointKeys.length; i += 1) {
+    const breakpoint = breakpointKeys[i];
     const breakpointUp = props[`${breakpoint}Up`];
     const breakpointDown = props[`${breakpoint}Down`];
 
@@ -89,13 +90,7 @@ function HiddenCss(props: AllProps) {
     className.push(classes[`only${capitalizeFirstLetter(only)}`]);
   }
 
-  if (!React.isValidElement(children)) {
-    return null;
-  }
-
-  return React.cloneElement(children, {
-    className: classNames(children.props.className, className.join(' ')),
-  });
+  return <span className={className}>{children}</span>;
 }
 
 export default withStyles(styles, { name: 'MuiHiddenCss' })(HiddenCss);

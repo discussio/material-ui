@@ -14,7 +14,7 @@ export const styles = (theme: Object) => ({
     cursor: 'pointer',
     // Remove grey highlight
     WebkitTapHighlightColor: theme.palette.common.transparent,
-    marginLeft: -12,
+    marginLeft: -14,
     marginRight: theme.spacing.unit * 2, // used for row presentation of radio/checkbox
   },
   disabled: {
@@ -78,6 +78,10 @@ export type Props = {
 
 type AllProps = DefaultProps & Props;
 
+/**
+ * Drop in replacement of the `Radio`, `Switch` and `Checkbox` component.
+ * Use this component if you want to display an extra label.
+ */
 function FormControlLabel(props: AllProps) {
   const {
     checked,

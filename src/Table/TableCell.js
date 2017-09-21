@@ -19,6 +19,7 @@ export const styles = (theme: Object) => ({
   },
   head: {
     whiteSpace: 'pre',
+    fontWeight: theme.typography.fontWeightMedium,
   },
   padding: {
     padding: `0 ${theme.spacing.unit * 7}px 0 ${theme.spacing.unit * 3}px`,
@@ -33,7 +34,9 @@ export const styles = (theme: Object) => ({
     paddingLeft: 12,
     paddingRight: 12,
   },
-  footer: {},
+  footer: {
+    borderBottom: 0,
+  },
 });
 
 function TableCell(props, context) {
@@ -121,7 +124,7 @@ TableCell.defaultProps = {
 };
 
 TableCell.contextTypes = {
-  table: PropTypes.object,
+  table: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles, { name: 'MuiTableCell' })(TableCell);

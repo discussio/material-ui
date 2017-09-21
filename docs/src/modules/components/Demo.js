@@ -7,10 +7,11 @@ import IconButton from 'material-ui/IconButton';
 import Collapse from 'material-ui/transitions/Collapse';
 import CodeIcon from 'material-ui-icons/Code';
 import MarkdownElement from 'docs/src/modules/components/MarkdownElement';
+import NoSSR from 'docs/src/modules/components/NoSSR';
+import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
   root: {
-    fontFamily: theme.typography.fontFamily,
     position: 'relative',
     backgroundColor: theme.palette.background.contentFrame,
     marginBottom: 40,
@@ -70,11 +71,18 @@ class Demo extends React.Component<any, any> {
 
     return (
       <div className={classes.root}>
-        <IconButton onClick={this.handleCodeButtonClick} className={classes.codeButton}>
-          <CodeIcon />
-        </IconButton>
+        <Tooltip
+          title={this.state.codeOpen ? 'Hide the source' : 'Show the source'}
+          placement="top"
+        >
+          <IconButton onClick={this.handleCodeButtonClick} className={classes.codeButton}>
+            <CodeIcon />
+          </IconButton>
+        </Tooltip>
         <Collapse in={this.state.codeOpen}>
-          <MarkdownElement className={classes.code} text={`\`\`\`js\n${raw}\n\`\`\``} />
+          <NoSSR>
+            <MarkdownElement className={classes.code} text={`\`\`\`js\n${raw}\n\`\`\``} />
+          </NoSSR>
         </Collapse>
         <div className={classes.demo} data-mui-demo={name}>
           <DemoComponent />

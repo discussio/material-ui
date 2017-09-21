@@ -28,7 +28,14 @@ export const styles = (theme: Object) => ({
     color: theme.palette.primary[500],
   },
   selectedIconOnly: {
-    paddingTop: 16,
+    paddingTop: theme.spacing.unit * 2,
+  },
+  wrapper: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    flexDirection: 'column',
   },
   label: {
     fontFamily: theme.typography.fontFamily,
@@ -150,8 +157,10 @@ class BottomNavigationButton extends React.Component<AllProps> {
 
     return (
       <ButtonBase className={className} focusRipple {...other} onClick={this.handleChange}>
-        {icon}
-        <span className={labelClassName}>{label}</span>
+        <span className={classes.wrapper}>
+          {icon}
+          <span className={labelClassName}>{label}</span>
+        </span>
       </ButtonBase>
     );
   }

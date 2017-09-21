@@ -1,12 +1,12 @@
 // @flow
 
 import React from 'react';
-import type { ChildrenArray, ComponentType } from 'react';
+import type { ChildrenArray, ElementType, Node } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 import { isDirty } from '../Input/Input';
-import { isMuiComponent } from '../utils/reactHelpers';
+import { isMuiElement } from '../utils/reactHelpers';
 
 export const styles = (theme: Object) => ({
   root: {
@@ -46,7 +46,7 @@ export type Props = {
   /**
    * The contents of the form control.
    */
-  children?: $ReadOnlyArray<ChildrenArray<*>>,
+  children?: $ReadOnlyArray<ChildrenArray<Node>>,
   /**
    * Useful to extend the style applied to components.
    */
@@ -59,7 +59,7 @@ export type Props = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component?: string | ComponentType<*>,
+  component?: ElementType,
   /**
    * If `true`, the label, input and helper text should be displayed in a disabled state.
    */
@@ -85,7 +85,7 @@ export type Props = {
    */
   required?: boolean,
   /**
-   * If `dense` | `normal`, will adjust vertical spacing of this and contained components.
+   * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
    */
   margin?: 'none' | 'dense' | 'normal',
 };
@@ -99,12 +99,18 @@ type State = {
 
 /**
  * Provides context such as dirty/focused/error/required for form inputs.
+ * Relying on the context provides high flexibilty and ensures that the state always stay
+ * consitent across the children of the `FormControl`.
+ * This context is used by the following components:
+ *  - FormLabel
+ *  - FormHelperText
+ *  - Input
+ *  - InputLabel
  */
 class FormControl extends React.Component<AllProps, State> {
   props: AllProps;
 
   static defaultProps = {
-    classes: {},
     component: 'div',
     disabled: false,
     error: false,
@@ -148,7 +154,7 @@ class FormControl extends React.Component<AllProps, State> {
     const { children } = this.props;
     if (children) {
       React.Children.forEach(children, child => {
-        if (isMuiComponent(child, 'Input') && isDirty(child.props, true)) {
+        if (isMuiElement(child, ['Input', 'Select']) && isDirty(child.props, true)) {
           this.setState({ dirty: true });
         }
       });

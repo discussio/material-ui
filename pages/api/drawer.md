@@ -11,7 +11,7 @@
 | SlideProps | Object |  | Properties applied to the `Slide` element. |
 | anchor | union:&nbsp;'left'<br>&nbsp;'top'<br>&nbsp;'right'<br>&nbsp;'bottom'<br> | 'left' | Side from which the drawer will appear. |
 | <span style="color: #31a148">children *</span> | Node |  | The contents of the drawer. |
-| classes | Object | {} | Useful to extend the style applied to components. |
+| classes | Object |  | Useful to extend the style applied to components. |
 | elevation | number | 16 | The elevation of the drawer. |
 | enterTransitionDuration | number | duration.enteringScreen | Customizes duration of enter animation (ms) |
 | leaveTransitionDuration | number | duration.leavingScreen | Customizes duration of leave animation (ms) |
@@ -19,11 +19,11 @@
 | open | boolean | false | If `true`, the drawer is open. |
 | <span style="color: #31a148">type *</span> | union:&nbsp;'permanent'<br>&nbsp;'persistent'<br>&nbsp;'temporary'<br> | 'temporary' | The type of drawer. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `paper`
 - `anchorLeft`

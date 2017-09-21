@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ChildrenArray } from 'react';
+import type { ChildrenArray, Node } from 'react';
 import warning from 'warning';
 import compose from 'recompose/compose';
 import classNames from 'classnames';
@@ -56,7 +56,7 @@ export type Props = {
   /**
    * The content of the component.
    */
-  children?: $ReadOnlyArray<ChildrenArray<*>>,
+  children?: $ReadOnlyArray<ChildrenArray<Node>>,
   /**
    * Useful to extend the style applied to components.
    */
@@ -161,13 +161,10 @@ class Tabs extends React.Component<AllProps, State> {
     this.updateScrollButtonState();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.value !== nextProps.value) {
-      this.updateIndicatorState(nextProps);
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.value !== this.props.value) {
+      this.updateIndicatorState(this.props);
+    }
     this.updateScrollButtonState();
     if (
       this.props.width !== prevProps.width ||
@@ -362,9 +359,16 @@ class Tabs extends React.Component<AllProps, State> {
     });
 
     this.valueToIndex = {};
-    const children = React.Children.map(childrenProp, (child, childIndex) => {
+    let childIndex = 0;
+    const children = React.Children.map(childrenProp, child => {
+      if (!React.isValidElement(child)) {
+        return null;
+      }
+
       const childValue = child.props.value || childIndex;
       this.valueToIndex[childValue] = childIndex;
+
+      childIndex += 1;
       return React.cloneElement(child, {
         fullWidth,
         selected: childValue === value,

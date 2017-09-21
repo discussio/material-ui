@@ -30,7 +30,7 @@ By adjusting the placement of the `insertionPoint` comment within your HTML body
 
 When the `className` property isn't enough and you need to access deeper elements, you can take advantage of the `classes` property to customize all the CSS injected by Material-UI for that given component.
 The list of these classes is documented in the **Component API** section.
-For instance, you can have a look at the [Button CSS API](/component-api/button#css-api).
+For instance, you can have a look at the [Button CSS API](/api/button#css-api).
 Alternatively, you can always look at the [implementation details](https://github.com/callemall/material-ui/blob/v1-beta/src/Button/Button.js).
 
 An example:
@@ -63,4 +63,9 @@ Material-UI attempts to implement all of these variations. Please refer to the [
 
 ## 4. User global theme variation
 
-In order to promote consistency and manage the user interface as a whole, Material-UI provide mechanisms to apply global changes. You can tweak the [configuration variables](/customization/themes#configuration-variables) as well as [customizing all instances of a component type](/customization/themes#customizing-all-instances-of-a-component-type).
+In order to promote consistency and manage the user interface as a whole, Material-UI provide mechanisms to apply global changes. You can tweak the [configuration variables](/customization/themes#configuration-variables).
+
+### Customizing all instances of a component type
+
+When the configuration variables aren't powerful enough, you can take advantage of the `overrides` key of the `theme` to potentially change every single style injected by Material-UI into the DOM.
+Learn more about it in [the theme section of the documentation](/customization/themes#customizing-all-instances-of-a-component-type).

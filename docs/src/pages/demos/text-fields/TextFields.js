@@ -20,6 +20,7 @@ const styles = theme => ({
 class TextFields extends React.Component {
   state = {
     name: 'Cat in the Hat',
+    age: '',
     multiline: 'Controlled',
   };
 
@@ -29,17 +30,23 @@ class TextFields extends React.Component {
     });
   };
 
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
   render() {
-    const classes = this.props.classes;
+    const { classes } = this.props;
 
     return (
-      <form className={classes.container} noValidate>
+      <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="name"
           label="Name"
           className={classes.textField}
           value={this.state.name}
-          onChange={event => this.setState({ name: event.target.value })}
+          onChange={this.handleChange('name')}
           margin="normal"
         />
         <TextField
@@ -74,17 +81,6 @@ class TextFields extends React.Component {
           margin="normal"
         />
         <TextField
-          id="date"
-          label="From date"
-          type="date"
-          defaultValue="2017-05-24"
-          className={classes.textField}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
           id="multiline-flexible"
           label="Multiline"
           multiline
@@ -115,15 +111,36 @@ class TextFields extends React.Component {
           label="With placeholder"
           placeholder="Placeholder"
           className={classes.textField}
+          margin="normal"
         />
         <TextField
           label="With placeholder multiline"
           placeholder="Placeholder"
           multiline
           className={classes.textField}
+          margin="normal"
         />
         <TextField
-          id="placeholder"
+          id="number"
+          label="Number"
+          value={this.state.age}
+          onChange={this.handleChange('age')}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+        <TextField
+          id="search"
+          label="Search field"
+          type="search"
+          className={classes.textField}
+          margin="normal"
+        />
+        <TextField
+          id="full-width"
           label="Label"
           InputProps={{ placeholder: 'Placeholder' }}
           helperText="Full width!"

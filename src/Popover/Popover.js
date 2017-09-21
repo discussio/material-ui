@@ -50,7 +50,7 @@ function getTransformOriginValue(transformOrigin) {
     .join(' ');
 }
 
-// Sum the scrollTop between two elements
+// Sum the scrollTop between two elements.
 function getScrollParent(parent, child) {
   let element = child;
   let scrollTop = 0;
@@ -134,11 +134,6 @@ export type Props = {
    */
   getContentAnchorEl?: Function,
   /**
-   * If `true`, the Popover will be rendered as a modal with
-   * scroll locking, focus trapping and a clickaway layer beneath
-   */
-  modal?: boolean,
-  /**
    * Callback fired before the component is entering
    */
   onEnter?: TransitionCallback,
@@ -173,6 +168,10 @@ export type Props = {
    */
   open?: boolean,
   /**
+   * Properties applied to the `Paper` element.
+   */
+  PaperProps?: Object,
+  /**
    * @ignore
    */
   role?: string,
@@ -195,13 +194,12 @@ type AllProps = DefaultProps & Props;
 
 class Popover extends React.Component<AllProps, void> {
   props: AllProps;
+
   static defaultProps = {
     anchorOrigin: {
       vertical: 'top',
       horizontal: 'left',
     },
-    classes: {},
-    modal: true,
     open: false,
     transformOrigin: {
       vertical: 'top',
@@ -350,34 +348,33 @@ class Popover extends React.Component<AllProps, void> {
 
   render() {
     const {
+      anchorEl,
+      anchorOrigin,
       children,
       classes,
       className,
-      modal,
-      onRequestClose,
-      open,
-      getContentAnchorEl,
-      anchorEl,
-      anchorOrigin,
-      role,
-      transformOrigin,
-      transitionDuration,
+      elevation,
       enteredClassName,
       enteringClassName,
       exitedClassName,
       exitingClassName,
+      getContentAnchorEl,
       onEnter,
       onEntering,
       onEntered,
       onExit,
       onExiting,
       onExited,
-      elevation,
+      open,
+      PaperProps,
+      role,
+      transformOrigin,
+      transitionDuration,
       ...other
     } = this.props;
 
     return (
-      <Modal show={open} backdropInvisible onRequestClose={onRequestClose} {...other}>
+      <Modal show={open} backdropInvisible {...other}>
         <Grow
           in={open}
           enteredClassName={enteredClassName}
@@ -392,6 +389,7 @@ class Popover extends React.Component<AllProps, void> {
           onExited={onExited}
           role={role}
           transitionAppear
+          transitionDuration={transitionDuration}
           rootRef={node => {
             this.transitionEl = node;
           }}
@@ -400,6 +398,7 @@ class Popover extends React.Component<AllProps, void> {
             data-mui-test="Popover"
             className={classNames(classes.paper, className)}
             elevation={elevation}
+            {...PaperProps}
           >
             <EventListener target="window" onResize={this.handleResize} />
             {children}

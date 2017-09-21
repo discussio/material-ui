@@ -3,7 +3,8 @@
 import React from 'react';
 import { spy } from 'sinon';
 import { assert } from 'chai';
-import { JssProvider, SheetsRegistry } from 'react-jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { SheetsRegistry } from 'react-jss/lib/jss';
 import { create } from 'jss';
 import preset from 'jss-preset-default';
 import withStyles from './withStyles';
@@ -83,8 +84,29 @@ describe('withStyles', () => {
         assert.strictEqual(consoleErrorMock.callCount(), 1);
         assert.match(
           consoleErrorMock.args()[0][0],
-          /Material-UI: the key `bar` provided to the classes property object is not implemented/,
+          /Material-UI: the key `bar` provided to the classes property is not implemented/,
         );
+      });
+
+      it('should warn if providing a non string', () => {
+        const wrapper = shallow(<StyledComponent1 classes={{ root: {} }} />);
+
+        assert.deepEqual(wrapper.props().classes, {
+          root: `${classes.root} [object Object]`,
+        });
+        assert.strictEqual(consoleErrorMock.callCount(), 2);
+        assert.match(
+          consoleErrorMock.args()[1][0],
+          /Material-UI: the key `root` provided to the classes property is not valid/,
+        );
+      });
+
+      it('should recycle the object between two render if possible', () => {
+        const wrapper = mount(<StyledComponent1 />);
+        const classes1 = wrapper.find(Empty).props().classes;
+        wrapper.update();
+        const classes2 = wrapper.find(Empty).props().classes;
+        assert.strictEqual(classes1, classes2);
       });
     });
 

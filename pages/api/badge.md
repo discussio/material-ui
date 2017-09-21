@@ -12,11 +12,11 @@
 | classes | object |  | Useful to extend the style applied to components. |
 | color | enum:&nbsp;'default'<br>&nbsp;'primary'<br>&nbsp;'accent'<br> | 'default' | The color of the component. It's using the theme palette when that makes sense. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `badge`

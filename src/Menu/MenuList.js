@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ChildrenArray } from 'react';
+import type { ChildrenArray, Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import keycode from 'keycode';
 import contains from 'dom-helpers/query/contains';
@@ -13,7 +13,7 @@ export type Props = {
   /**
    * MenuList contents, normally `MenuItem`s.
    */
-  children?: $ReadOnlyArray<ChildrenArray<*>>,
+  children?: $ReadOnlyArray<ChildrenArray<Node>>,
   /**
    * @ignore
    */
@@ -172,7 +172,7 @@ class MenuList extends React.Component<Props, State> {
           }
 
           return React.cloneElement(child, {
-            tabIndex: index === this.state.currentTabIndex ? '0' : '-1',
+            tabIndex: index === this.state.currentTabIndex ? 0 : -1,
             ref: child.props.selected
               ? node => {
                   this.selectedItem = node;

@@ -44,6 +44,7 @@ export { default as Paper } from './Paper';
 export { default as Popover } from './Popover';
 export { CircularProgress, LinearProgress } from './Progress';
 export { default as Radio, RadioGroup } from './Radio';
+export { default as Select } from './Select';
 export { default as Snackbar, SnackbarContent } from './Snackbar';
 export { MuiThemeProvider, withStyles, withTheme, createMuiTheme } from './styles';
 
@@ -66,3 +67,4 @@ export { default as Tabs, Tab } from './Tabs';
 export { default as Typography } from './Typography';
 export { default as TextField } from './TextField';
 export { default as Toolbar } from './Toolbar';
+export { default as Tooltip } from './Tooltip';

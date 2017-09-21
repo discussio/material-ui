@@ -7,15 +7,15 @@
 ## Props
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
-| children | node |  | Can be a `ToolbarGroup` to render a group of related items. |
+| children | node |  | Toolbar children, usually a mixture of `IconButton`, `Button` and `Typography`. |
 | classes | object |  | Useful to extend the style applied to components. |
 | disableGutters | bool | false | If `true`, disables gutter padding. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 ## CSS API
 
-You can overrides all the class names injected by Material-UI thanks to the `classes` property.
+You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
 - `root`
 - `gutters`

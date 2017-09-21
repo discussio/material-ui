@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 import ButtonBase from '../ButtonBase';
-import KeyboardArrowLeft from '../svg-icons/keyboard-arrow-left';
-import KeyboardArrowRight from '../svg-icons/keyboard-arrow-right';
+import KeyboardArrowLeft from '../svg-icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '../svg-icons/KeyboardArrowRight';
 
 export const styles = (theme: Object) => ({
   root: {
@@ -29,7 +29,7 @@ function TabScrollButton(props) {
   }
 
   return (
-    <ButtonBase className={className} onClick={onClick} tabIndex="-1" {...other}>
+    <ButtonBase className={className} onClick={onClick} tabIndex={-1} {...other}>
       {direction === 'left' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
     </ButtonBase>
   );

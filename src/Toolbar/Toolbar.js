@@ -10,13 +10,7 @@ export const styles = (theme: Object) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    minHeight: 56,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      minHeight: 48,
-    },
-    [theme.breakpoints.up('sm')]: {
-      minHeight: 64,
-    },
+    ...theme.mixins.toolbar,
   },
   gutters: theme.mixins.gutters({}),
 });
@@ -41,7 +35,7 @@ function Toolbar(props) {
 
 Toolbar.propTypes = {
   /**
-   * Can be a `ToolbarGroup` to render a group of related items.
+   * Toolbar children, usually a mixture of `IconButton`, `Button` and `Typography`.
    */
   children: PropTypes.node,
   /**

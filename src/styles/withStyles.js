@@ -29,7 +29,7 @@ const generateClassName = createGenerateClassName();
 // that parent has a higher specificity.
 let indexCounter = Number.MIN_SAFE_INTEGER;
 
-export const sheetsManager = new Map();
+export const sheetsManager: Map<*, *> = new Map();
 
 // We use the same empty object to ref count the styles that don't need a theme object.
 const noopTheme = {};
@@ -70,18 +70,13 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
   function enhance<BaseProps: {}>(BaseComponent: ComponentType<BaseProps>) {
     const { withTheme = false, name, ...styleSheetOptions } = options;
     const factory = createEagerFactory(BaseComponent);
-    const stylesCreators = [getStylesCreator(stylesOrCreator)];
-    const listenToTheme =
-      stylesCreators.some(stylesCreator => stylesCreator.themingEnabled) ||
-      withTheme ||
-      typeof name === 'string';
+    const stylesCreator = getStylesCreator(stylesOrCreator);
+    const listenToTheme = stylesCreator.themingEnabled || withTheme || typeof name === 'string';
 
-    stylesCreators.forEach(stylesCreator => {
-      if (stylesCreator.options.index === undefined) {
-        indexCounter += 1;
-        stylesCreator.options.index = indexCounter;
-      }
-    });
+    if (stylesCreator.options.index === undefined) {
+      indexCounter += 1;
+      stylesCreator.options.index = indexCounter;
+    }
 
     warning(
       indexCounter < 0,
@@ -105,13 +100,10 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
     type AllProps = StyleProps & BaseProps;
     class Style extends React.Component<AllProps, {}> {
       props: AllProps;
-      static contextTypes = {
-        sheetsManager: PropTypes.object,
-        ...contextTypes,
-        ...(listenToTheme ? themeListener.contextTypes : {}),
-      };
+
       // Exposed for tests purposes
       static options: ?Options;
+
       // Exposed for test purposes.
       static Naked = BaseComponent;
 
@@ -119,10 +111,10 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
         super(props, context);
         this.jss = this.context[ns.jss] || jss;
         this.sheetsManager = this.context.sheetsManager || sheetsManager;
-        // Attach the stylesCreators to the instance of the component as in the context
+        // Attach the stylesCreator to the instance of the component as in the context
         // of react-hot-loader the hooks can be executed in a different closure context:
         // https://github.com/gaearon/react-hot-loader/blob/master/src/patch.dev.js#L107
-        this.stylesCreators = stylesCreators;
+        this.stylesCreatorSaved = stylesCreator;
         this.sheetOptions = {
           generateClassName,
           ...this.context[ns.sheetOptions],
@@ -165,79 +157,77 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
       }
 
       attach(theme: Object) {
-        this.stylesCreators.forEach(stylesCreator => {
-          let sheetManager = this.sheetsManager.get(stylesCreator);
+        const stylesCreatorSaved = this.stylesCreatorSaved;
+        let sheetManager = this.sheetsManager.get(stylesCreatorSaved);
 
-          if (!sheetManager) {
-            sheetManager = new Map();
-            this.sheetsManager.set(stylesCreator, sheetManager);
+        if (!sheetManager) {
+          sheetManager = new Map();
+          this.sheetsManager.set(stylesCreatorSaved, sheetManager);
+        }
+
+        let sheetManagerTheme = sheetManager.get(theme);
+
+        if (!sheetManagerTheme) {
+          sheetManagerTheme = {
+            refs: 0,
+            sheet: null,
+          };
+          sheetManager.set(theme, sheetManagerTheme);
+        }
+
+        if (sheetManagerTheme.refs === 0) {
+          const styles = stylesCreatorSaved.create(theme, name);
+          let meta;
+
+          if (process.env.NODE_ENV !== 'production') {
+            meta = name || getDisplayName(BaseComponent);
+            // Sanitize the string as will be used in development to prefix the generated
+            // class name.
+            meta = meta.replace(new RegExp(/[!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g), '-');
           }
 
-          let sheetManagerTheme = sheetManager.get(theme);
+          const sheet = this.jss.createStyleSheet(styles, {
+            meta,
+            link: false,
+            ...this.sheetOptions,
+            ...stylesCreatorSaved.options,
+            name,
+            ...styleSheetOptions,
+          });
 
-          if (!sheetManagerTheme) {
-            sheetManagerTheme = {
-              refs: 0,
-              sheet: null,
-            };
-            sheetManager.set(theme, sheetManagerTheme);
+          sheetManagerTheme.sheet = sheet;
+          sheet.attach();
+
+          const sheetsRegistry = this.context[ns.sheetsRegistry];
+          if (sheetsRegistry) {
+            sheetsRegistry.add(sheet);
           }
+        }
 
-          if (sheetManagerTheme.refs === 0) {
-            const styles = stylesCreator.create(theme, name);
-            let meta;
-
-            if (process.env.NODE_ENV !== 'production') {
-              meta = name || getDisplayName(BaseComponent);
-              // Sanitize the string as will be used in development to prefix the generated
-              // class name.
-              meta = meta.replace(new RegExp(/[!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g), '-');
-            }
-
-            const sheet = this.jss.createStyleSheet(styles, {
-              meta,
-              link: false,
-              ...this.sheetOptions,
-              ...stylesCreator.options,
-              name,
-              ...styleSheetOptions,
-            });
-
-            sheetManagerTheme.sheet = sheet;
-            sheet.attach();
-
-            const sheetsRegistry = this.context[ns.sheetsRegistry];
-            if (sheetsRegistry) {
-              sheetsRegistry.add(sheet);
-            }
-          }
-
-          sheetManagerTheme.refs += 1;
-        });
+        sheetManagerTheme.refs += 1;
       }
 
       detach(theme: Object) {
-        this.stylesCreators.forEach(stylesCreator => {
-          const sheetManager = this.sheetsManager.get(stylesCreator);
-          const sheetManagerTheme = sheetManager.get(theme);
+        const stylesCreatorSaved = this.stylesCreatorSaved;
+        const sheetManager = this.sheetsManager.get(stylesCreatorSaved);
+        const sheetManagerTheme = sheetManager.get(theme);
 
-          sheetManagerTheme.refs -= 1;
+        sheetManagerTheme.refs -= 1;
 
-          if (sheetManagerTheme.refs === 0) {
-            sheetManager.delete(theme);
-            this.jss.removeStyleSheet(sheetManagerTheme.sheet);
-            const sheetsRegistry = this.context[ns.sheetsRegistry];
-            if (sheetsRegistry) {
-              sheetsRegistry.remove(sheetManagerTheme.sheet);
-            }
+        if (sheetManagerTheme.refs === 0) {
+          sheetManager.delete(theme);
+          this.jss.removeStyleSheet(sheetManagerTheme.sheet);
+          const sheetsRegistry = this.context[ns.sheetsRegistry];
+          if (sheetsRegistry) {
+            sheetsRegistry.remove(sheetManagerTheme.sheet);
           }
-        });
+        }
       }
 
       unsubscribeId = null;
       jss = null;
       sheetsManager = null;
-      stylesCreators = null;
+      stylesCreatorSaved = null;
       theme = null;
       sheetOptions = null;
       theme = null;
@@ -246,15 +236,9 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
         const { classes: classesProp, innerRef, ...other } = this.props;
 
         let classes;
-        const renderedClasses = this.stylesCreators.reduce((accumulator, current) => {
-          const sheetManager = this.sheetsManager.get(current);
-          const sheetsManagerTheme = sheetManager.get(this.theme);
-
-          return {
-            ...accumulator,
-            ...sheetsManagerTheme.sheet.classes,
-          };
-        }, {});
+        const sheetManager = this.sheetsManager.get(this.stylesCreatorSaved);
+        const sheetsManagerTheme = sheetManager.get(this.theme);
+        const renderedClasses = sheetsManagerTheme.sheet.classes;
 
         if (classesProp) {
           classes = {
@@ -264,18 +248,30 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
                 renderedClasses[key],
                 [
                   `Material-UI: the key \`${key}\` ` +
-                    `provided to the classes property object is not implemented in ${getDisplayName(
+                    `provided to the classes property is not implemented in ${getDisplayName(
                       BaseComponent,
                     )}.`,
-                  `You can only overrides one of the following: ${Object.keys(renderedClasses).join(
+                  `You can only override one of the following: ${Object.keys(renderedClasses).join(
                     ',',
                   )}`,
                 ].join('\n'),
               );
 
-              if (classesProp[key] !== undefined) {
+              warning(
+                !classesProp[key] || typeof classesProp[key] === 'string',
+                [
+                  `Material-UI: the key \`${key}\` ` +
+                    `provided to the classes property is not valid for ${getDisplayName(
+                      BaseComponent,
+                    )}.`,
+                  `You need to provide a non empty string instead of: ${classesProp[key]}.`,
+                ].join('\n'),
+              );
+
+              if (classesProp[key]) {
                 accumulator[key] = `${renderedClasses[key]} ${classesProp[key]}`;
               }
+
               return accumulator;
             }, {}),
           };
@@ -299,6 +295,12 @@ function withStyles(stylesOrCreator: Object, options?: Options = {}) {
         });
       }
     }
+
+    Style.contextTypes = {
+      sheetsManager: PropTypes.object,
+      ...contextTypes,
+      ...(listenToTheme ? themeListener.contextTypes : {}),
+    };
 
     hoistNonReactStatics(Style, BaseComponent);
 

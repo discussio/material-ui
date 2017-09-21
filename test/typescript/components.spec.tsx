@@ -39,6 +39,8 @@ import {
   Toolbar,
   Typography,
   Grid,
+  Select,
+  Input,
 } from '../../src';
 import Collapse from '../../src/transitions/Collapse';
 import { GridList } from '../../src/GridList';
@@ -50,6 +52,7 @@ import Table, {
   TableRow,
 } from '../../src/Table';
 import { withStyles, StyleRulesCallback } from '../../src/styles';
+import { withResponsiveFullScreen, DialogProps } from '../../src/Dialog';
 
 const log = console.log;
 const FakeIcon = () => <div>ICON</div>;
@@ -68,6 +71,8 @@ const AppBarTest = () =>
   </AppBar>;
 
 const AvatarTest = () => <Avatar alt="Image Alt" src="example.jpg" />;
+
+const AvaterClassName = () => <Avatar className="foo" />;
 
 const BadgeTest = () =>
   <Badge badgeContent={4} color="primary">
@@ -97,6 +102,15 @@ const ButtonTest = () =>
     <Button raised>Raised</Button>
     <Button fab color="primary" aria-label="add">
       <FakeIcon />
+    </Button>
+    <Button tabIndex={1} title="some button">
+      Raised
+    </Button>
+    <Button component="a">
+      Simple Link
+    </Button>
+    <Button component={props => <a {...props} />}>
+      Complexe Link
     </Button>
   </div>;
 
@@ -144,7 +158,7 @@ const CardMediaTest = () =>
       title="Shrimp and Chorizo Paella"
       subheader="September 14, 2016"
     />
-    <CardMedia>
+    <CardMedia image="src.png">
       <img src={'image/src.png'} alt="Contemplative Reptile" />
     </CardMedia>
     <CardContent>
@@ -275,6 +289,7 @@ const DrawerTest = () => {
   return (
     <div>
       <Drawer
+        type="persistent"
         open={open.left}
         onRequestClose={(e: React.SyntheticEvent<any>) => log(e)}
         onClick={(e: React.SyntheticEvent<any>) => log(e)}
@@ -282,6 +297,7 @@ const DrawerTest = () => {
         List
       </Drawer>
       <Drawer
+        type="temporary"
         anchor="top"
         open={open.top}
         onRequestClose={(e: React.SyntheticEvent<any>) => log(e)}
@@ -291,6 +307,7 @@ const DrawerTest = () => {
       </Drawer>
       <Drawer
         anchor="bottom"
+        type="temporary"
         open={open.bottom}
         onRequestClose={(e: React.SyntheticEvent<any>) => log(e)}
         onClick={(e: React.SyntheticEvent<any>) => log(e)}
@@ -298,6 +315,7 @@ const DrawerTest = () => {
         List
       </Drawer>
       <Drawer
+        type="persistent"
         anchor="right"
         open={open.right}
         onRequestClose={(e: React.SyntheticEvent<any>) => log(e)}
@@ -309,25 +327,18 @@ const DrawerTest = () => {
   );
 };
 
-const DockedDrawerTest = () =>
-  class DockedDrawer extends React.Component<{}, { docked: boolean }> {
-    state = { docked: true };
-    render() {
-      const docked: true | false = this.state.docked;
-      return (
-        <Drawer anchor="bottom" open={true} docked={docked}>
-          List
-        </Drawer>
-      );
-    }
-  };
-
 const GridTest = () =>
   <Grid container>
-    <Grid item xs={12}>...</Grid>
-    <Grid item sm={12}>...</Grid>
-    <Grid item xl={true}>...</Grid>
-  </Grid>
+    <Grid item xs={12}>
+      ...
+    </Grid>
+    <Grid item sm={12}>
+      ...
+    </Grid>
+    <Grid item xl={true}>
+      ...
+    </Grid>
+  </Grid>;
 
 const GridListTest = () =>
   <GridList cellHeight={160} cols={3}>
@@ -345,7 +356,7 @@ const ListTest = () =>
         key={value}
         onClick={(e: React.SyntheticEvent<any>) => log(e)}
       >
-        <Checkbox checked={true} tabIndex="-1" disableRipple />
+        <Checkbox checked={true} tabIndex={-1} disableRipple />
         <ListItemText primary={`Line item ${value + 1}`} />
         <ListItemSecondaryAction>
           <IconButton aria-label="Comments">
@@ -599,6 +610,11 @@ const StepperTest = () =>
 
     render() {
       const classes = this.props.classes;
+      const defaultProps = {
+        steps: 2,
+        nextButton: <Button>Next</Button>,
+        backButton: <Button>Back</Button>,
+      };
       return (
         <MobileStepper
           type="dots"
@@ -606,10 +622,7 @@ const StepperTest = () =>
           position="static"
           activeStep={this.state.activeStep}
           className={classes.root}
-          onBack={this.handleBack}
-          onNext={this.handleNext}
-          disableBack={this.state.activeStep === 0}
-          disableNext={this.state.activeStep === 5}
+          {...defaultProps}
         />
       );
     }
@@ -750,4 +763,40 @@ const TextFieldTest = () =>
       onChange={(event: React.SyntheticEvent<any>) =>
         log({ name: event.currentTarget.value })}
     />
+    <TextField
+      id="name"
+      label="Name"
+      value={'Alice'}
+      InputProps={{ classes: { foo: 'bar' } }}
+    />
   </div>;
+
+const SelectTest = () => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.value);
+  };
+
+  <Select input={<Input />} value={10} onChange={handleChange}>
+    <MenuItem value="">
+      <em>None</em>
+    </MenuItem>
+    <MenuItem value={10}>Ten</MenuItem>
+    <MenuItem value={20}>Twenty</MenuItem>
+    <MenuItem value={30}>Thirty</MenuItem>
+  </Select>;
+};
+
+const ResponsiveComponentTest = () => {
+  const ResponsiveComponent = withResponsiveFullScreen({
+    breakpoint: 'sm',
+  })(({ children, width }) =>
+    <div style={{ width }}>
+      {children}
+    </div>
+  );
+  <ResponsiveComponent />;
+
+  const ResponsiveDialogComponent = withResponsiveFullScreen<DialogProps>({
+    breakpoint: 'sm',
+  })(Dialog);
+};

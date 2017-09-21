@@ -92,9 +92,12 @@ export type Props = {
    */
   multiline?: boolean,
   /**
-   * Name attribute of the `Input` element.
+   * Name attribute of the `input` element.
    */
   name?: string,
+  /**
+   * TODO
+   */
   placeholder?: string,
   /**
    * If `true`, the label is displayed as required.
@@ -121,7 +124,7 @@ export type Props = {
    */
   value?: string | number,
   /**
-   * If `dense` | `normal`, will adjust vertical spacing of this and contained components.
+   * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
    */
   margin?: 'none' | 'dense' | 'normal',
 };

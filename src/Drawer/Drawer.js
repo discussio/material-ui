@@ -149,7 +149,6 @@ class Drawer extends React.Component<AllProps, State> {
 
   static defaultProps = {
     anchor: 'left',
-    classes: {},
     elevation: 16,
     enterTransitionDuration: duration.enteringScreen,
     leaveTransitionDuration: duration.leavingScreen,
@@ -237,7 +236,7 @@ class Drawer extends React.Component<AllProps, State> {
     return (
       <Modal
         backdropTransitionDuration={open ? enterTransitionDuration : leaveTransitionDuration}
-        className={classes.modal}
+        className={classNames(classes.modal, className)}
         show={open}
         onRequestClose={onRequestClose}
         {...other}

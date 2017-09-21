@@ -25,10 +25,10 @@
 | inputRef | Function |  | Use that property to pass a ref callback to the native input component. |
 | label | Node |  | The label content. |
 | labelClassName | string |  | The CSS class name of the label element. |
-| margin | union:&nbsp;'none'<br>&nbsp;'dense'<br>&nbsp;'normal'<br> |  | If `dense` | `normal`, will adjust vertical spacing of this and contained components. |
+| margin | union:&nbsp;'none'<br>&nbsp;'dense'<br>&nbsp;'normal'<br> |  | If `dense` or `normal`, will adjust vertical spacing of this and contained components. |
 | multiline | boolean |  | If `true`, a textarea element will be rendered instead of an input. |
-| name | string |  | Name attribute of the `Input` element. |
-| placeholder | string |  |  |
+| name | string |  | Name attribute of the `input` element. |
+| placeholder | string |  | TODO |
 | required | boolean | false | If `true`, the label is displayed as required. |
 | rootRef | Function |  | Use that property to pass a ref callback to the root component. |
 | rows | union:&nbsp;string<br>&nbsp;number<br> |  | Number of rows to display when multiline option is set to true. |
@@ -36,7 +36,7 @@
 | type | string |  | Type attribute of the `Input` element. It should be a valid HTML5 input type. |
 | value | union:&nbsp;string<br>&nbsp;number<br> |  | The value of the `Input` element, required for a controlled component. |
 
-Any other properties supplied will be spread to the root element.
+Any other properties supplied will be [spread to the root element](/customization/api#spread).
 
 
 ## Inheritance
@@ -46,5 +46,6 @@ The properties of the [&lt;FormControl /&gt;](/api/form-control) component are a
 ## Demos
 
 - [Autocomplete](/demos/autocomplete)
+- [Pickers](/demos/pickers)
 - [Text Fields](/demos/text-fields)
 
