@@ -84,6 +84,8 @@ export {
 export { default as Divider } from './Divider';
 export { default as Drawer } from './Drawer';
 
+export { ExpansionPanel, ExpansionPanelSummary } from './ExpansionPanel';
+
 export {
   FormControl,
   FormGroup,
