@@ -10,7 +10,7 @@ The [Expansion panel](https://material.io/guidelines/components/expansion-panels
 
 {{demo='pages/demos/expansion-panels/SimpleExpansionPanel.js'}}
 
-## Sub labels and Collumns
+## Sub labels and Columns
 
 {{demo='pages/demos/expansion-panels/DetailedExpansionPanel.js'}}
 
