@@ -70,7 +70,10 @@ export {
 } from './Dialog';
 export { default as Divider } from './Divider';
 export { default as Drawer } from './Drawer';
-export { ExpansionPanel, ExpansionPanelSummary } from './ExpansionPanel';
+export {
+  default as ExpansionPanel,
+  ExpansionPanelSummary,
+} from './ExpansionPanel';
 export { FormControl, FormGroup, FormLabel, FormHelperText, FormControlLabel } from './Form';
 export { default as Hidden } from './Hidden';
 export { default as Icon } from './Icon';

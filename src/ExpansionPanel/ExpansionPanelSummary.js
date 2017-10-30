@@ -118,6 +118,8 @@ type State = {
 class ExpansionPanelSummary extends React.Component<AllProps, State> {
   props: AllProps;
 
+  static muiName = 'ExpansionPanelSummary';
+
   static defaultProps = {
     classes: {},
     disabled: false,
@@ -188,7 +190,5 @@ class ExpansionPanelSummary extends React.Component<AllProps, State> {
     );
   }
 }
-
-ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 
 export default withStyles(styles)(ExpansionPanelSummary);
