@@ -189,4 +189,6 @@ class ExpansionPanelSummary extends React.Component<AllProps, State> {
   }
 }
 
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
 export default withStyles(styles)(ExpansionPanelSummary);

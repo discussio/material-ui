@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Collapse from '../transitions/Collapse';
 import Paper from '../Paper';
 import withStyles from '../styles/withStyles';
+import { isMuiElement } from '../utils/reactHelpers';
 
 export const styles = (theme: Object) => {
   const transition = {
@@ -186,7 +187,7 @@ class ExpansionPanel extends React.Component<AllProps, State> {
     let summary = null;
 
     const children = React.Children.map(childrenProp, child => {
-      if (child.type.name === 'withStyles(ExpansionPanelSummary)') {
+      if (isMuiElement(child, ['ExpansionPanelSummary'])) {
         summary = React.cloneElement(child, {
           disabled,
           expanded: this.state.expanded,
